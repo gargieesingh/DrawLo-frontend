@@ -73,27 +73,23 @@ export default function Home() {
 
   return (
     <div 
-      className="min-h-screen w-full max-w-[100vw] overflow-x-hidden mx-auto flex items-center justify-center p-4 md:p-8 bg-[#f0fdf4]" 
+      className="min-h-screen w-full max-w-[100vw] overflow-x-hidden mx-auto flex flex-col items-center justify-center p-4 bg-[#f0fdf4]" 
       style={{
         backgroundImage: 'radial-gradient(circle, rgba(0,0,0,0.05) 2px, transparent 2px)',
         backgroundSize: '40px 40px',
         backgroundPosition: '0 0'
       }}
     >
-      <div className="w-full max-w-6xl flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-24 my-8 lg:my-0">
-        
-        {/* Left Side - Game Flow */}
-        <div className="w-full max-w-md flex flex-col items-center">
-          <div className="relative mb-10 text-center animate-bounce-slow">
-             <h1 className="text-7xl font-black tracking-tight text-[#0f172a] drop-shadow-[0_6px_0_rgba(163,230,53,1)] mb-4" style={{ WebkitTextStroke: '1px #0f172a' }}>
-              Draw<span className="text-[#a3e635]">Lo</span>
-             </h1>
-             <div className="inline-block bg-[#a3e635] text-[#064e3b] font-black uppercase tracking-[0.2em] text-sm px-6 py-2 rounded-full border border-[#65a30d] shadow-[0_4px_0_#65a30d] transform -rotate-2">
-               Draw. Guess. Win.
-             </div>
-          </div>
+      <div className="relative mb-10 text-center animate-bounce-slow">
+         <h1 className="text-7xl font-black tracking-tight text-[#0f172a] drop-shadow-[0_6px_0_rgba(163,230,53,1)] mb-4" style={{ WebkitTextStroke: '1px #0f172a' }}>
+          Draw<span className="text-[#a3e635]">Lo</span>
+         </h1>
+         <div className="inline-block bg-[#a3e635] text-[#064e3b] font-black uppercase tracking-[0.2em] text-sm px-6 py-2 rounded-full border border-[#65a30d] shadow-[0_4px_0_#65a30d] transform -rotate-2">
+           Draw. Guess. Win.
+         </div>
+      </div>
 
-          <div className="bg-white border-2 border-[#e2e8f0] p-8 rounded-[32px] shadow-[0_12px_40px_rgba(0,0,0,0.05)] w-full flex flex-col items-center relative z-10 box-border">
+      <div className="bg-white border-2 border-[#e2e8f0] p-8 rounded-[32px] shadow-[0_12px_40px_rgba(0,0,0,0.05)] w-full max-w-md flex flex-col items-center relative z-10">
         
         <form className="w-full flex flex-col">
           {/* Name input — shared by all modes */}
@@ -234,22 +230,9 @@ export default function Home() {
             ⚠️ {state.error}
           </div>
         )}
-          </div>
-        </div>
-
-        {/* Right Side - How To Play */}
-        <div className="w-full lg:max-w-[480px] flex flex-col justify-center">
-          <div className="hidden lg:block mb-8 text-left px-2">
-            <h2 className="text-4xl font-black text-[#0f172a] tracking-tight mb-3">Jump right in!</h2>
-            <p className="text-[#64748b] font-medium leading-relaxed">
-              No complicated rules. Whether you're an artist or can barely draw a stick figure, you'll fit right in.
-            </p>
-          </div>
-          
-          <div className="bg-white/50 backdrop-blur-sm lg:p-8 rounded-[32px] lg:border-2 lg:border-[#e2e8f0] lg:shadow-[0_12px_40px_rgba(0,0,0,0.03)]">
-            <HowToPlay />
-          </div>
-        </div>
+      </div>
+      <div className="mt-6 mb-2">
+        <HowToPlay />
       </div>
     </div>
   );
