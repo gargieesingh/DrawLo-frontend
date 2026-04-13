@@ -1,5 +1,4 @@
 import { io } from 'socket.io-client';
-require('dotenv').config();
 
 const getBackendUrl = () => {
   const url = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
