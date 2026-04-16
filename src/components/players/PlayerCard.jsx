@@ -37,11 +37,7 @@ export default function PlayerCard({ player, index, rank, isDrawing, isHost }) {
         </div>
         
         {/* Status icons overlay */}
-        {isHost && (
-          <div className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 bg-[#f7b731] rounded-full p-0.5 sm:p-1 border-[1.5px] sm:border-2 border-white text-[7px] sm:text-xs leading-none shadow-[0_1.5px_0_#713f12] sm:shadow-[0_2px_0_#713f12]" title="Host">
-            👑
-          </div>
-        )}
+
       </div>
 
       {/* Info */}

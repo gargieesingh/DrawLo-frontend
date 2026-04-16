@@ -251,11 +251,7 @@ export default function Lobby() {
                         ) : (
                           player.name.charAt(0).toUpperCase()
                         )}
-                        {playerIsHost && (
-                          <div className="absolute -top-2 -right-2 bg-[#f7b731] text-lg leading-none rounded-full p-1.5 border-2 border-[#713f12] shadow-[0_2px_0_#713f12]" title="Host">
-                            👑
-                          </div>
-                        )}
+
                       </div>
                       <div className="flex flex-col items-center max-w-full">
                          <span className="text-[#0f172a] font-bold text-base truncate max-w-[120px]" title={player.name}>
