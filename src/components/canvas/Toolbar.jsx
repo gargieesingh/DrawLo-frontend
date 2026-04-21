@@ -27,6 +27,27 @@ const EraserIcon = () => (
   </svg>
 );
 
+const FillIcon = () => (
+  <svg viewBox="0 0 100 100" className="w-[18px] h-[18px] lg:w-6 lg:h-6 drop-shadow-sm">
+    {/* Paint bucket body */}
+    <g transform="translate(4, 2)">
+      {/* Bucket shape */}
+      <path d="M 20 30 L 14 75 C 13 82 19 88 26 88 L 56 88 C 63 88 69 82 68 75 L 62 30 Z"
+        fill="#60a5fa" stroke="#1e293b" strokeWidth="5" strokeLinejoin="round" />
+      {/* Bucket top rim */}
+      <rect x="16" y="25" width="50" height="9" rx="4"
+        fill="#f8fafc" stroke="#1e293b" strokeWidth="5" strokeLinejoin="round" />
+      {/* Handle arc */}
+      <path d="M 30 25 C 30 10 52 10 52 25"
+        fill="none" stroke="#1e293b" strokeWidth="5" strokeLinecap="round" />
+      {/* Paint drip */}
+      <path d="M 76 20 C 90 34 90 50 76 56 C 62 50 62 34 76 20 Z"
+        fill="#f43f5e" stroke="#1e293b" strokeWidth="3.5" strokeLinejoin="round" />
+      <line x1="76" y1="20" x2="50" y2="50" stroke="#1e293b" strokeWidth="4" strokeLinecap="round" />
+    </g>
+  </svg>
+);
+
 const COLORS = [
   '#000000','#ffffff','#ef4444','#f97316','#eab308','#22c55e',
   '#06b6d4','#3b82f6','#8b5cf6','#ec4899','#92400e','#6b7280',
@@ -102,6 +123,19 @@ export default function Toolbar() {
             ><EraserIcon /></button>
             {showSizePicker && currentTool === 'eraser' && renderSizePicker('right-full mr-3 top-0')}
           </div>
+
+          {/* Fill */}
+          <div className="relative">
+            <button
+              onClick={() => {
+                dispatch({ type: 'SET_TOOL', tool: 'fill' });
+                setShowSizePicker(false);
+              }}
+              title="Fill Color"
+              className={`btn-game w-8 h-8 rounded-xl flex items-center justify-center border-b-[3px]
+                ${currentTool === 'fill' ? 'bg-[#a3e635] text-[#064e3b] border-[#65a30d]' : 'bg-[#f8fafc] text-[#475569] border-[#e2e8f0] hover:bg-[#e2e8f0]'}`}
+            ><FillIcon /></button>
+          </div>
         </div>
 
         <div className="w-full h-0.5 bg-[#e2e8f0] rounded-full shrink-0"></div>
@@ -117,7 +151,7 @@ export default function Toolbar() {
                 setShowSizePicker(false);
               }}
               className={`w-6 h-6 rounded-full cursor-pointer transition-transform duration-200 shadow-[0_2px_0_rgba(0,0,0,0.1)] shrink-0
-                ${currentColor === color && currentTool === 'pen' ? 'scale-110 border-[2px] border-[#0f172a] z-10' : 'border border-transparent hover:border-[#94a3b8]'}`}
+                ${currentColor === color && (currentTool === 'pen' || currentTool === 'fill') ? 'scale-110 border-[2px] border-[#0f172a] z-10' : 'border border-transparent hover:border-[#94a3b8]'}`}
               style={{ backgroundColor: color }}
               title={color}
             />
@@ -158,6 +192,19 @@ export default function Toolbar() {
             ><EraserIcon /></button>
             {showSizePicker && currentTool === 'eraser' && renderSizePicker('bottom-full left-0 mb-4')}
           </div>
+
+          {/* Fill */}
+          <div className="relative">
+            <button
+              onClick={() => {
+                dispatch({ type: 'SET_TOOL', tool: 'fill' });
+                setShowSizePicker(false);
+              }}
+              title="Fill Color"
+              className={`btn-game px-3 py-2.5 rounded-2xl flex items-center justify-center
+                ${currentTool === 'fill' ? 'bg-[#a3e635] text-[#064e3b] border-b-[4px] border-[#65a30d]' : 'bg-[#f8fafc] text-[#475569] border-b-[4px] border-[#e2e8f0] hover:bg-[#e2e8f0]'}`}
+            ><FillIcon /></button>
+          </div>
         </div>
 
         <div className="w-1.5 h-10 bg-[#e2e8f0] rounded-full shrink-0"></div>
@@ -173,7 +220,7 @@ export default function Toolbar() {
                 setShowSizePicker(false);
               }}
               className={`w-7 h-7 rounded-full cursor-pointer transition-transform duration-200 shadow-[0_2px_0_rgba(0,0,0,0.1)] shrink-0
-                ${currentColor === color && currentTool === 'pen' ? 'scale-125 border-[3px] border-[#0f172a] z-10' : 'border-2 border-transparent hover:scale-110 hover:border-[#94a3b8]'}`}
+                ${currentColor === color && (currentTool === 'pen' || currentTool === 'fill') ? 'scale-125 border-[3px] border-[#0f172a] z-10' : 'border-2 border-transparent hover:scale-110 hover:border-[#94a3b8]'}`}
               style={{ backgroundColor: color }}
               title={color}
             />

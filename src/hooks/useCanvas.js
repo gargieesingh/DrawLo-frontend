@@ -3,6 +3,68 @@
 import { useEffect, useRef, useCallback } from 'react';
 import socket from '../socket/socket';
 
+// ── Flood-fill (paint bucket) implementation ───────────────────────────────────
+
+/**
+ * Executes a flood-fill on a canvas context starting at (startX, startY)
+ * filling with the given hex color string.
+ */
+function floodFill(ctx, startX, startY, fillColor, canvasWidth, canvasHeight) {
+  startX = Math.round(startX);
+  startY = Math.round(startY);
+
+  const imgData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
+  const data = imgData.data;
+
+  // Parse the fill color hex to r,g,b
+  const fc = fillColor.replace('#', '');
+  const fillR = parseInt(fc.substring(0, 2), 16);
+  const fillG = parseInt(fc.substring(2, 4), 16);
+  const fillB = parseInt(fc.substring(4, 6), 16);
+
+  const idx = (startY * canvasWidth + startX) * 4;
+  const targR = data[idx];
+  const targG = data[idx + 1];
+  const targB = data[idx + 2];
+  const targA = data[idx + 3];
+
+  // Already the same color — nothing to do
+  if (targR === fillR && targG === fillG && targB === fillB && targA === 255) return;
+
+  const tolerance = 32; // allow slight anti-aliasing differences
+
+  function matchTarget(i) {
+    return (
+      Math.abs(data[i]     - targR) <= tolerance &&
+      Math.abs(data[i + 1] - targG) <= tolerance &&
+      Math.abs(data[i + 2] - targB) <= tolerance &&
+      Math.abs(data[i + 3] - targA) <= tolerance
+    );
+  }
+
+  const stack = [[startX, startY]];
+  const visited = new Uint8Array(canvasWidth * canvasHeight);
+
+  while (stack.length > 0) {
+    const [cx, cy] = stack.pop();
+    if (cx < 0 || cy < 0 || cx >= canvasWidth || cy >= canvasHeight) continue;
+    const vi = cy * canvasWidth + cx;
+    if (visited[vi]) continue;
+    const pi = vi * 4;
+    if (!matchTarget(pi)) continue;
+
+    visited[vi] = 1;
+    data[pi]     = fillR;
+    data[pi + 1] = fillG;
+    data[pi + 2] = fillB;
+    data[pi + 3] = 255;
+
+    stack.push([cx + 1, cy], [cx - 1, cy], [cx, cy + 1], [cx, cy - 1]);
+  }
+
+  ctx.putImageData(imgData, 0, 0);
+}
+
 const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 600;
 
@@ -35,6 +97,7 @@ export function useCanvas(isDrawer) {
     ctx.beginPath();
     ctx.moveTo(data.lastX, data.lastY);
     ctx.lineTo(data.x, data.y);
+    if (data.tool === 'fill') return; // fill events are handled separately
     ctx.strokeStyle = data.tool === 'eraser' ? '#ffffff' : data.color;
     ctx.lineWidth = data.size;
     ctx.lineCap = 'round';
@@ -48,7 +111,13 @@ export function useCanvas(isDrawer) {
     const ctx = getCtx();
     if (!ctx || !history?.length) return;
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    history.forEach(evt => applyStroke(ctx, evt));
+    history.forEach(evt => {
+      if (evt.tool === 'fill') {
+        floodFill(ctx, evt.x, evt.y, evt.color, CANVAS_WIDTH, CANVAS_HEIGHT);
+      } else {
+        applyStroke(ctx, evt);
+      }
+    });
   }, []);
 
   // ── Remote draw event ──────────────────────────────────────────────────────
@@ -88,7 +157,20 @@ export function useCanvas(isDrawer) {
     socket.emit('draw', data);
   }
 
-  // ── Mouse event listeners ──────────────────────────────────────────────────
+  function emitFill(x, y) {
+    const data = {
+      tool: 'fill',
+      x, y,
+      color: colorRef.current,
+    };
+    // Fill locally
+    const ctx = getCtx();
+    if (ctx) floodFill(ctx, x, y, data.color, CANVAS_WIDTH, CANVAS_HEIGHT);
+    // Emit to server so other clients can replay it
+    socket.emit('draw', data);
+  }
+
+  // ── Mouse & Touch event listeners ─────────────────────────────────────────
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -96,8 +178,13 @@ export function useCanvas(isDrawer) {
 
     function onMouseDown(e) {
       if (e.button !== 0) return;
-      isDrawingRef.current = true;
       const pos = getCanvasPos(e.clientX, e.clientY);
+      if (toolRef.current === 'fill') {
+        // Fill tool: single click, no drag
+        emitFill(pos.x, pos.y);
+        return;
+      }
+      isDrawingRef.current = true;
       lastPosRef.current = pos;
     }
 
@@ -119,15 +206,19 @@ export function useCanvas(isDrawer) {
     // ── Touch event listeners (mobile/tablet support) ──────────────────────
 
     function onTouchStart(e) {
-      e.preventDefault(); // Prevent page scroll while drawing
+      e.preventDefault();
       const touch = e.touches[0];
-      isDrawingRef.current = true;
       const pos = getCanvasPos(touch.clientX, touch.clientY);
+      if (toolRef.current === 'fill') {
+        emitFill(pos.x, pos.y);
+        return;
+      }
+      isDrawingRef.current = true;
       lastPosRef.current = pos;
     }
 
     function onTouchMove(e) {
-      e.preventDefault(); // Prevent page scroll while drawing
+      e.preventDefault();
       if (!isDrawingRef.current) return;
       const touch = e.touches[0];
       const pos = getCanvasPos(touch.clientX, touch.clientY);
@@ -165,7 +256,12 @@ export function useCanvas(isDrawer) {
   useEffect(() => {
     function onDraw(data) {
       if (!isDrawer) {
-        drawRemote(data);
+        if (data.tool === 'fill') {
+          const ctx = getCtx();
+          if (ctx) floodFill(ctx, data.x, data.y, data.color, CANVAS_WIDTH, CANVAS_HEIGHT);
+        } else {
+          drawRemote(data);
+        }
       }
     }
 
