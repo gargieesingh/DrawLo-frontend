@@ -48,6 +48,21 @@ const FillIcon = () => (
   </svg>
 );
 
+const TrashIcon = () => (
+  <svg viewBox="0 0 24 24" className="w-[16px] h-[16px]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    {/* Handle */}
+    <path d="M9 3h6" />
+    {/* Lid */}
+    <path d="M3 6h18" />
+    {/* Bucket body */}
+    <path d="M5 6l1 14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-14" />
+    {/* 3 vertical lines */}
+    <line x1="10" y1="10" x2="10" y2="18" />
+    <line x1="12" y1="10" x2="12" y2="18" />
+    <line x1="14" y1="10" x2="14" y2="18" />
+  </svg>
+);
+
 const COLORS = [
   '#000000','#ffffff','#ef4444','#f97316','#eab308','#22c55e',
   '#06b6d4','#3b82f6','#8b5cf6','#ec4899','#92400e','#6b7280',
@@ -195,8 +210,8 @@ export default function Toolbar() {
           <button
             onClick={() => { socket.emit('clear_canvas'); setShowColorPicker(false); }}
             title="Clear Canvas"
-            className="btn-game w-8 h-8 rounded-lg text-sm flex items-center justify-center bg-[#ef4444] text-white border-b-[2px] border-[#b91c1c] hover:bg-[#f87171]"
-          >🗑️</button>
+            className="btn-game w-8 h-8 rounded-lg flex items-center justify-center bg-[#ef4444] text-white border-b-[2px] border-[#b91c1c] hover:bg-[#f87171]"
+          ><TrashIcon /></button>
 
         </div>
       </div>
