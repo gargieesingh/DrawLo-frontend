@@ -65,6 +65,7 @@ export default function Toolbar() {
   const { state, dispatch } = useGame();
   const { currentColor, currentSize, currentTool } = state;
   const [showSizePicker, setShowSizePicker] = useState(false);
+  const [showColorPicker, setShowColorPicker] = useState(false);
 
   const handleSizeSelect = (size) => {
     dispatch({ type: 'SET_SIZE', size });
@@ -97,20 +98,54 @@ export default function Toolbar() {
 
   return (
     <>
-      {/* ── MOBILE: vertical toolbar to the right of canvas ── */}
-      <div className="lg:hidden flex flex-col items-center gap-2 bg-white rounded-2xl p-2 border-2 border-[#e2e8f0] shadow-sm shrink-0 relative">
+      {/* ── MOBILE: horizontal toolbar below canvas ── */}
+      <div className="lg:hidden relative">
 
-        {/* Tools Group */}
-        <div className="flex gap-2">
+        {/* Color picker popover — appears above the toolbar */}
+        {showColorPicker && (
+          <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-white border-2 border-[#e2e8f0] rounded-2xl p-3 shadow-xl z-50 w-[220px] animate-in fade-in slide-in-from-bottom-2 duration-200">
+            {/* Colors grid */}
+            <div className="grid grid-cols-8 gap-1.5">
+              {COLORS.map((color) => (
+                <div
+                  key={color}
+                  onClick={() => {
+                    dispatch({ type: 'SET_COLOR', color });
+                    if (currentTool === 'eraser') dispatch({ type: 'SET_TOOL', tool: 'pen' });
+                    setShowColorPicker(false);
+                  }}
+                  className={`w-6 h-6 rounded-full cursor-pointer transition-transform duration-150 shadow-[0_2px_0_rgba(0,0,0,0.15)] shrink-0
+                    ${currentColor === color ? 'scale-110 border-[2.5px] border-[#0f172a] z-10' : 'border border-transparent hover:scale-110 hover:border-[#94a3b8]'}`}
+                  style={{ backgroundColor: color }}
+                  title={color}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Single horizontal strip */}
+        <div className="flex items-center gap-1.5 bg-white rounded-xl px-2 py-1.5 border-2 border-[#e2e8f0] shadow-sm w-full justify-between">
+
           {/* Pen */}
           <div className="relative">
             <button
               onClick={() => handleToolSelect('pen')}
               title="Pen"
-              className={`btn-game w-8 h-8 rounded-xl flex items-center justify-center border-b-[3px]
+              className={`btn-game w-8 h-8 rounded-lg flex items-center justify-center border-b-[2px]
                 ${currentTool === 'pen' ? 'bg-[#a3e635] text-[#064e3b] border-[#65a30d]' : 'bg-[#f8fafc] text-[#475569] border-[#e2e8f0] hover:bg-[#e2e8f0]'}`}
             ><PencilIcon /></button>
-            {showSizePicker && currentTool === 'pen' && renderSizePicker('right-full mr-3 top-0')}
+            {showSizePicker && currentTool === 'pen' && (
+              <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-white border-2 border-[#e2e8f0] rounded-2xl p-1.5 shadow-lg flex gap-2 z-50">
+                {BRUSH_SIZES.map((size) => (
+                  <div key={size.val} onClick={() => handleSizeSelect(size.val)}
+                    className={`flex items-center justify-center cursor-pointer w-7 h-7 rounded-full transition-all shrink-0
+                      ${currentSize === size.val ? 'border-[3px] border-[#84cc16] bg-[#f0fdf4] scale-110' : 'border border-[#e2e8f0] hover:bg-[#f1f5f9] bg-white'}`}>
+                    <div className="bg-[#0f172a] rounded-full pointer-events-none" style={{ width: size.dot, height: size.dot }} />
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Eraser */}
@@ -118,54 +153,52 @@ export default function Toolbar() {
             <button
               onClick={() => handleToolSelect('eraser')}
               title="Eraser"
-              className={`btn-game w-8 h-8 rounded-xl flex items-center justify-center border-b-[3px]
+              className={`btn-game w-8 h-8 rounded-lg flex items-center justify-center border-b-[2px]
                 ${currentTool === 'eraser' ? 'bg-[#a3e635] text-[#064e3b] border-[#65a30d]' : 'bg-[#f8fafc] text-[#475569] border-[#e2e8f0] hover:bg-[#e2e8f0]'}`}
             ><EraserIcon /></button>
-            {showSizePicker && currentTool === 'eraser' && renderSizePicker('right-full mr-3 top-0')}
+            {showSizePicker && currentTool === 'eraser' && (
+              <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-white border-2 border-[#e2e8f0] rounded-2xl p-1.5 shadow-lg flex gap-2 z-50">
+                {BRUSH_SIZES.map((size) => (
+                  <div key={size.val} onClick={() => handleSizeSelect(size.val)}
+                    className={`flex items-center justify-center cursor-pointer w-7 h-7 rounded-full transition-all shrink-0
+                      ${currentSize === size.val ? 'border-[3px] border-[#84cc16] bg-[#f0fdf4] scale-110' : 'border border-[#e2e8f0] hover:bg-[#f1f5f9] bg-white'}`}>
+                    <div className="bg-[#0f172a] rounded-full pointer-events-none" style={{ width: size.dot, height: size.dot }} />
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Fill */}
-          <div className="relative">
-            <button
-              onClick={() => {
-                dispatch({ type: 'SET_TOOL', tool: 'fill' });
-                setShowSizePicker(false);
-              }}
-              title="Fill Color"
-              className={`btn-game w-8 h-8 rounded-xl flex items-center justify-center border-b-[3px]
-                ${currentTool === 'fill' ? 'bg-[#a3e635] text-[#064e3b] border-[#65a30d]' : 'bg-[#f8fafc] text-[#475569] border-[#e2e8f0] hover:bg-[#e2e8f0]'}`}
-            ><FillIcon /></button>
-          </div>
+          <button
+            onClick={() => {
+              dispatch({ type: 'SET_TOOL', tool: 'fill' });
+              setShowSizePicker(false);
+              setShowColorPicker(false);
+            }}
+            title="Fill Color"
+            className={`btn-game w-8 h-8 rounded-lg flex items-center justify-center border-b-[2px]
+              ${currentTool === 'fill' ? 'bg-[#a3e635] text-[#064e3b] border-[#65a30d]' : 'bg-[#f8fafc] text-[#475569] border-[#e2e8f0] hover:bg-[#e2e8f0]'}`}
+          ><FillIcon /></button>
+
+          {/* Color Palette button — shows active color, opens picker */}
+          <button
+            onClick={() => { setShowColorPicker(!showColorPicker); setShowSizePicker(false); }}
+            title="Color Palette"
+            className={`btn-game w-8 h-8 rounded-lg flex items-center justify-center border-b-[2px] shrink-0
+              ${showColorPicker ? 'border-[#65a30d] bg-[#f0fdf4]' : 'border-[#e2e8f0] bg-[#f8fafc] hover:bg-[#e2e8f0]'}`}
+          >
+            <span className="flex items-center justify-center w-4 h-4 rounded-full border-2 border-[#1e293b] shadow-sm" style={{ backgroundColor: currentColor }} />
+          </button>
+
+          {/* Clear */}
+          <button
+            onClick={() => { socket.emit('clear_canvas'); setShowColorPicker(false); }}
+            title="Clear Canvas"
+            className="btn-game w-8 h-8 rounded-lg text-sm flex items-center justify-center bg-[#ef4444] text-white border-b-[2px] border-[#b91c1c] hover:bg-[#f87171]"
+          >🗑️</button>
+
         </div>
-
-        <div className="w-full h-0.5 bg-[#e2e8f0] rounded-full shrink-0"></div>
-
-        {/* Colors — Compact 2-column grid */}
-        <div className="grid grid-cols-2 gap-1.5">
-          {COLORS.map((color) => (
-            <div
-              key={color}
-              onClick={() => {
-                dispatch({ type: 'SET_COLOR', color });
-                if (currentTool === 'eraser') dispatch({ type: 'SET_TOOL', tool: 'pen' });
-                setShowSizePicker(false);
-              }}
-              className={`w-6 h-6 rounded-full cursor-pointer transition-transform duration-200 shadow-[0_2px_0_rgba(0,0,0,0.1)] shrink-0
-                ${currentColor === color && (currentTool === 'pen' || currentTool === 'fill') ? 'scale-110 border-[2px] border-[#0f172a] z-10' : 'border border-transparent hover:border-[#94a3b8]'}`}
-              style={{ backgroundColor: color }}
-              title={color}
-            />
-          ))}
-        </div>
-
-        <div className="w-full h-0.5 bg-[#e2e8f0] rounded-full shrink-0"></div>
-
-        {/* Clear */}
-        <button
-          onClick={() => socket.emit('clear_canvas')}
-          title="Clear"
-          className="btn-game w-8 h-8 rounded-xl text-base flex items-center justify-center bg-[#ef4444] text-white border-b-[3px] border-[#b91c1c] hover:bg-[#f87171]"
-        >🗑️</button>
       </div>
 
       {/* ── LARGE SCREENS: horizontal toolbar below canvas ── */}

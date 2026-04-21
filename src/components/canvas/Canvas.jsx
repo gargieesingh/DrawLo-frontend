@@ -48,15 +48,15 @@ export default function Canvas() {
 
   return (
     <div className="flex flex-col flex-1 min-h-0 w-full relative group overflow-hidden">
-      {/* On mobile: row layout (canvas left, toolbar right). On lg+: column (canvas top, toolbar below) */}
-      <div className="flex flex-row lg:flex-col flex-1 min-h-0 gap-1.5 lg:gap-0 w-full">
+      {/* On mobile: column layout (canvas top, toolbar below). On lg+: column (canvas top, toolbar below) */}
+      <div className="flex flex-col flex-1 min-h-0 gap-1.5 lg:gap-0 w-full">
 
         {/* Canvas Wrapper */}
         <div 
           ref={containerRef}
-          className={`relative flex-1 bg-white rounded-2xl lg:rounded-3xl overflow-hidden transition-all duration-300 min-w-0
+          className={`relative flex-1 bg-white rounded-2xl lg:rounded-3xl overflow-hidden transition-all duration-300 min-w-0 w-full
             ${isDrawer ? 'border-[4px] lg:border-[6px] border-[#e94560] shadow-[0_8px_0_#9f1239] lg:shadow-[0_16px_0_#9f1239]' : 'border-[4px] lg:border-[6px] border-[#334155] shadow-[0_8px_0_#0f172a] lg:shadow-[0_12px_0_#0f172a]'}`}
-          style={{ aspectRatio: '800/600', maxHeight: '100%', maxWidth: '100%', margin: '0 auto' }}
+          style={{ maxHeight: '100%', maxWidth: '100%', margin: '0 auto' }}
         >
           {isDrawer && (
             <div className="absolute top-2 left-2 lg:top-4 lg:left-4 bg-[#f7b731] text-[#713f12] text-[9px] lg:text-sm font-black px-2 lg:px-4 py-1 lg:py-2 rounded-full shadow-[0_4px_0_#a16207] z-10 uppercase tracking-widest pointer-events-none transform -rotate-2">

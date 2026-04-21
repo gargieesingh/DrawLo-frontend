@@ -151,13 +151,13 @@ export default function Game() {
       {/* Large screens: 3-column row | Small/medium: canvas top, sidebars bottom */}
       <div className="flex flex-1 min-h-0 w-full max-w-[1600px] mx-auto p-2 lg:p-4 gap-2 lg:gap-4 flex-col lg:flex-row">
 
-        {/* === SMALL/MEDIUM: Canvas on top === */}
-        <main className="lg:hidden w-full flex flex-col items-center justify-center flex-1 min-h-0 overflow-hidden">
+        {/* === SMALL/MEDIUM: Canvas on top — ~60% of height === */}
+        <main className="lg:hidden w-full flex flex-col items-center justify-center [flex:3_3_0%] min-h-0 overflow-hidden">
            <Canvas />
         </main>
 
-        {/* === SMALL/MEDIUM: Bottom row with leaderboard + chat === */}
-        <div className="lg:hidden flex flex-row gap-1.5 sm:gap-4 flex-1 min-h-0">
+        {/* === SMALL/MEDIUM: Bottom row with leaderboard + chat — ~40% of height === */}
+        <div className="lg:hidden flex flex-row gap-1.5 sm:gap-4 [flex:2_2_0%] min-h-0">
           {/* Leaderboard */}
           <aside className="w-1/2 flex flex-col bg-white rounded-[20px] sm:rounded-[24px] border-2 border-[#e2e8f0] shadow-sm overflow-hidden min-w-0">
              <div className="bg-[#f8fafc] text-[#475569] py-1.5 sm:py-2 px-2 sm:px-3 border-b-2 border-[#e2e8f0] shrink-0">
