@@ -216,11 +216,11 @@ export default function Toolbar() {
         </div>
       </div>
 
-      {/* ── LARGE SCREENS: horizontal toolbar below canvas ── */}
-      <div className="hidden lg:flex bg-white rounded-3xl p-3 items-center justify-between gap-4 shadow-sm border-2 border-[#e2e8f0] mx-auto w-max relative z-20">
+      {/* ── LARGE SCREENS: vertical toolbar right of canvas ── */}
+      <div className="hidden lg:flex flex-col bg-white rounded-[24px] p-3 items-center justify-between gap-4 shadow-sm border-2 border-[#e2e8f0] h-max relative z-20 shrink-0 mx-0 my-auto">
 
         {/* Tools Group */}
-        <div className="flex gap-2 shrink-0">
+        <div className="flex flex-col gap-2 shrink-0">
           <div className="relative">
             <button
               onClick={() => handleToolSelect('pen')}
@@ -228,7 +228,7 @@ export default function Toolbar() {
               className={`btn-game px-3 py-2.5 rounded-2xl flex items-center justify-center
                 ${currentTool === 'pen' ? 'bg-[#a3e635] text-[#064e3b] border-b-[4px] border-[#65a30d]' : 'bg-[#f8fafc] text-[#475569] border-b-[4px] border-[#e2e8f0] hover:bg-[#e2e8f0]'}`}
             ><PencilIcon /></button>
-            {showSizePicker && currentTool === 'pen' && renderSizePicker('bottom-full left-0 mb-4')}
+            {showSizePicker && currentTool === 'pen' && renderSizePicker('right-full top-0 mr-4')}
           </div>
 
           <div className="relative">
@@ -238,7 +238,7 @@ export default function Toolbar() {
               className={`btn-game px-3 py-2.5 rounded-2xl flex items-center justify-center
                 ${currentTool === 'eraser' ? 'bg-[#a3e635] text-[#064e3b] border-b-[4px] border-[#65a30d]' : 'bg-[#f8fafc] text-[#475569] border-b-[4px] border-[#e2e8f0] hover:bg-[#e2e8f0]'}`}
             ><EraserIcon /></button>
-            {showSizePicker && currentTool === 'eraser' && renderSizePicker('bottom-full left-0 mb-4')}
+            {showSizePicker && currentTool === 'eraser' && renderSizePicker('right-full top-0 mr-4')}
           </div>
 
           {/* Fill */}
@@ -255,10 +255,10 @@ export default function Toolbar() {
           </div>
         </div>
 
-        <div className="w-1.5 h-10 bg-[#e2e8f0] rounded-full shrink-0"></div>
+        <div className="h-1.5 w-10 bg-[#e2e8f0] rounded-full shrink-0"></div>
 
-        {/* Colors — single row, no wrap */}
-        <div className="flex gap-2 overflow-x-auto">
+        {/* Colors — grid */}
+        <div className="grid grid-cols-2 gap-2">
           {COLORS.map((color) => (
             <div
               key={color}
@@ -275,7 +275,7 @@ export default function Toolbar() {
           ))}
         </div>
 
-        <div className="w-1.5 h-10 bg-[#e2e8f0] rounded-full shrink-0 mx-2"></div>
+        <div className="h-1.5 w-10 bg-[#e2e8f0] rounded-full shrink-0 mx-auto"></div>
 
         {/* Clear */}
         <button
