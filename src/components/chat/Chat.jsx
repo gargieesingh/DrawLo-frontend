@@ -41,6 +41,27 @@ export default function Chat() {
       );
     }
 
+    // ── Consecutive message logic ─────────────────────────────────────────────
+    let showName = true;
+    if (index > 0) {
+      const prevMsg = messages[index - 1];
+      if ((msg.type === 'chat' || msg.type === 'guess') && 
+          (prevMsg.type === 'chat' || prevMsg.type === 'guess') && 
+          prevMsg.id === msg.id) {
+        showName = false;
+      }
+    }
+
+    let showAvatar = true;
+    if (index < messages.length - 1) {
+      const nextMsg = messages[index + 1];
+      if ((msg.type === 'chat' || msg.type === 'guess') &&
+          (nextMsg.type === 'chat' || nextMsg.type === 'guess') &&
+          nextMsg.id === msg.id) {
+        showAvatar = false;
+      }
+    }
+
     // ── Shared color + avatar logic ───────────────────────────────────────────
     let charCode = 0;
     if (msg.id) charCode = [...msg.id].reduce((a, c) => a + c.charCodeAt(0), 0);
@@ -55,7 +76,7 @@ export default function Chat() {
     function AvatarBubble({ faded }) {
       return (
         <div
-          className={`relative w-5 h-5 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-white text-[9px] sm:text-xs font-black shadow-[inset_0_-2px_rgba(0,0,0,0.2)] shrink-0 overflow-hidden${faded ? ' opacity-50 border-2 border-transparent' : ''}`}
+          className={`relative w-5 h-5 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-white text-[9px] sm:text-xs font-black shadow-[inset_0_-2px_rgba(0,0,0,0.2)] shrink-0 overflow-hidden${faded ? ' opacity-50 border-2 border-transparent' : ''} ${!showAvatar ? 'invisible' : ''}`}
           style={{ backgroundColor: colorTheme }}
         >
           {avatar ? (
@@ -74,7 +95,7 @@ export default function Chat() {
           <div key={key} className="flex flex-row-reverse gap-1.5 sm:gap-2 my-1 sm:my-2 items-end">
             <AvatarBubble faded={false} />
             <div className="bg-[#a3e635] border-2 border-[#65a30d] text-[#064e3b] px-2 sm:px-3 py-1 sm:py-2 rounded-[12px] sm:rounded-[16px] rounded-br-sm max-w-[85%] break-words shadow-sm flex flex-col gap-0.5 items-end">
-              <span style={{ color: '#065f46' }} className="font-black text-[10px] sm:text-xs leading-tight">You</span>
+              {showName && <span style={{ color: '#065f46' }} className="font-black text-[10px] sm:text-xs leading-tight">You</span>}
               <span className="opacity-90 font-semibold text-xs sm:text-sm">{msg.text}</span>
             </div>
           </div>
@@ -84,7 +105,7 @@ export default function Chat() {
         <div key={key} className="flex gap-1.5 sm:gap-2 my-1 sm:my-2 items-end">
           <AvatarBubble faded={false} />
           <div className="bg-white border-2 border-[#e2e8f0] text-[#0f172a] px-2 sm:px-3 py-1 sm:py-2 rounded-[12px] sm:rounded-[16px] rounded-bl-sm max-w-[85%] break-words shadow-sm flex flex-col gap-0.5">
-            <span style={{ color: colorTheme }} className="font-black text-[10px] sm:text-xs leading-tight">{msg.name}</span>
+            {showName && <span style={{ color: colorTheme }} className="font-black text-[10px] sm:text-xs leading-tight">{msg.name}</span>}
             <span className="opacity-90 font-semibold text-xs sm:text-sm">{msg.text}</span>
           </div>
         </div>
@@ -97,7 +118,7 @@ export default function Chat() {
         <div key={key} className="flex flex-row-reverse gap-1.5 sm:gap-2 my-1 sm:my-2 items-end">
           <AvatarBubble faded={true} />
           <div className="bg-[#e0f2fe] border-2 border-[#bae6fd] text-[#0c4a6e] px-2 sm:px-3 py-1 sm:py-2 rounded-[12px] sm:rounded-[16px] rounded-br-sm max-w-[85%] break-words shadow-sm flex flex-col gap-0.5 items-end">
-            <span style={{ color: '#0369a1' }} className="font-black opacity-100 text-[10px] sm:text-xs leading-tight">You</span>
+            {showName && <span style={{ color: '#0369a1' }} className="font-black opacity-100 text-[10px] sm:text-xs leading-tight">You</span>}
             <span className="font-semibold text-xs sm:text-sm">{msg.text}</span>
           </div>
         </div>
@@ -107,7 +128,7 @@ export default function Chat() {
       <div key={key} className="flex gap-1.5 sm:gap-2 my-1 sm:my-2 items-end">
         <AvatarBubble faded={true} />
         <div className="bg-[#f8fafc] border-2 border-[#f1f5f9] text-[#475569] px-2 sm:px-3 py-1 sm:py-2 rounded-[12px] sm:rounded-[16px] rounded-bl-sm max-w-[85%] break-words shadow-sm flex flex-col gap-0.5">
-          <span style={{ color: colorTheme }} className="font-black opacity-100 text-[10px] sm:text-xs leading-tight">{msg.name}</span>
+          {showName && <span style={{ color: colorTheme }} className="font-black opacity-100 text-[10px] sm:text-xs leading-tight">{msg.name}</span>}
           <span className="font-semibold text-xs sm:text-sm">{msg.text}</span>
         </div>
       </div>
