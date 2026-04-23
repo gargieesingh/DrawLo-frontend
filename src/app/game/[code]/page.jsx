@@ -20,8 +20,9 @@ export default function Game() {
   const { state, dispatch } = useGame();
   const router = useRouter();
 
-  const { gameStatus, gameResult, players } = state;
+  const { gameStatus, gameResult, players, isMyTurn } = state;
   const [waitingForOthers, setWaitingForOthers] = useState(false);
+  const isDrawer = isMyTurn && gameStatus === 'drawing';
 
   useEffect(() => {
     if (!state.playerName) {
@@ -148,8 +149,7 @@ export default function Game() {
       </header>
 
       {/* Main Layout */}
-      {/* Large screens: 3-column row | Small/medium: canvas top, sidebars bottom */}
-      <div className="flex-1 w-full max-w-[1600px] mx-auto p-2 lg:p-4 grid grid-cols-[30%_70%] lg:grid-cols-[280px_minmax(0,1fr)_320px] grid-rows-[3fr_2fr] lg:grid-rows-1 gap-1.5 sm:gap-2 lg:gap-4 min-h-0">
+      <div className={`flex-1 w-full max-w-[1600px] mx-auto p-2 lg:p-4 grid grid-cols-[40%_60%] lg:grid-cols-[280px_minmax(0,1fr)_320px] ${isDrawer ? 'grid-rows-[3fr_2fr]' : 'grid-rows-[calc(60%-54px)_minmax(0,1fr)]'} lg:grid-rows-1 gap-1.5 sm:gap-2 lg:gap-4 min-h-0`}>
 
         {/* Canvas - Top on mobile, Center on desktop */}
         <main className="col-span-2 row-start-1 row-end-2 lg:col-span-1 lg:col-start-2 lg:col-end-3 lg:row-start-1 lg:row-end-2 flex flex-col items-center justify-center min-h-0 overflow-hidden min-w-0 lg:p-2">
