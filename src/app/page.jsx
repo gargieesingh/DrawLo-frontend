@@ -166,7 +166,7 @@ export default function Home() {
                 : 'bg-[#a3e635] text-[#064e3b] border-[#65a30d] hover:bg-[#bef264] hover:border-[#4d7c0f]'
             }`}
           >
-            <span className="block text-xl font-black">⚡ Quick Play</span>
+            <span className="block text-xl font-black">Quick Play</span>
             <span className={`block text-xs font-bold mt-0.5 ${isConnecting ? 'text-[#94a3b8]' : 'text-[#064e3b] opacity-80'}`}>
               {isConnecting ? 'Connecting...' : 'Auto-match with other players'}
             </span>
@@ -191,7 +191,7 @@ export default function Home() {
                     : 'bg-[#f1f5f9] text-[#475569] border-[#cbd5e1] hover:bg-[#e2e8f0]'
                 }`}
               >
-                🔒 Create Private Room
+                Create Private Room
               </button>
               
               <div className="flex items-center gap-4">

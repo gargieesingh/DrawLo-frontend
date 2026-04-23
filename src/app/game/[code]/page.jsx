@@ -132,7 +132,7 @@ export default function Game() {
         
         {/* Left: Logo & Round */}
         <div className="flex items-center gap-2 sm:gap-6 w-[25%] shrink-0">
-          <h1 className="hidden sm:block text-2xl font-black tracking-tight text-[#0f172a] drop-shadow-[0_2px_0_rgba(163,230,53,1)] cursor-default">🎨 DrawLo</h1>
+          <h1 className="hidden sm:block text-2xl font-black tracking-tight text-[#0f172a] drop-shadow-[0_2px_0_rgba(163,230,53,1)] cursor-default">DrawLo</h1>
           <RoundInfo />
         </div>
 

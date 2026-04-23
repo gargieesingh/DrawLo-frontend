@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+
 const steps = [
   {
     number: '01',
@@ -34,6 +36,18 @@ const steps = [
 ];
 
 export default function HowToPlay() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const activeStep = steps[currentIndex];
+
+  const handlePrev = () => {
+    if (currentIndex > 0) setCurrentIndex(currentIndex - 1);
+  };
+
+  const handleNext = () => {
+    if (currentIndex < steps.length - 1) setCurrentIndex(currentIndex + 1);
+  };
+
   return (
     <section className="w-full max-w-md mx-auto pb-8">
       {/* Section header */}
@@ -43,42 +57,70 @@ export default function HowToPlay() {
         <div className="flex-1 h-px bg-[#e2e8f0]" />
       </div>
 
-      {/* Cards — horizontal scroll on mobile */}
-      <div className="flex gap-3 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-none"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-        {steps.map((step) => (
-          <div
-            key={step.number}
-            className="snap-start shrink-0 w-44 bg-white border-2 border-[#e2e8f0] rounded-3xl p-3 shadow-[0_4px_0_#e2e8f0] flex flex-col items-center gap-2 hover:-translate-y-1 hover:border-[#a3e635] hover:shadow-[0_6px_0_rgba(163,230,53,0.5)] transition-all duration-200"
-          >
-            {/* Illustration */}
-            <div className="w-full rounded-2xl bg-[#f8fafc] border border-[#e2e8f0] overflow-hidden flex items-center justify-center"
-              style={{ height: 110 }}>
-              {step.illustration}
-            </div>
+      {/* Carousel Container */}
+      <div className="flex items-center justify-center gap-3 sm:gap-6">
+        {/* Prev Button */}
+        <button
+          onClick={handlePrev}
+          disabled={currentIndex === 0}
+          className="w-8 h-8 sm:w-10 sm:h-10 shrink-0 rounded-full flex items-center justify-center bg-white border-2 border-[#e2e8f0] text-[#475569] shadow-[0_2px_0_#e2e8f0] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#f8fafc] hover:-translate-y-0.5 hover:border-[#cbd5e1] hover:shadow-[0_4px_0_#cbd5e1] transition-all active:translate-y-0 active:shadow-none"
+          aria-label="Previous step"
+        >
+          <svg viewBox="0 0 24 24" className="w-4 h-4 sm:w-5 sm:h-5 fill-none stroke-current stroke-[3]" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
 
-            {/* Step number badge */}
-            <div className="self-start bg-[#a3e635] text-[#064e3b] font-black text-[10px] px-2 py-0.5 rounded-full border border-[#65a30d]">
-              {step.number}
-            </div>
-
-            {/* Title */}
-            <p className="text-[#0f172a] font-black text-sm text-center leading-tight w-full">
-              {step.title}
-            </p>
-
-            {/* Description */}
-            <p className="text-[#64748b] text-[10px] text-center leading-relaxed">
-              {step.description}
-            </p>
+        {/* Active Card */}
+        <div
+          className="shrink-0 w-60 sm:w-72 bg-white border-2 border-[#e2e8f0] rounded-3xl p-3 sm:p-4 shadow-[0_4px_0_#e2e8f0] flex flex-col items-center gap-2 sm:gap-3 hover:-translate-y-1 hover:border-[#a3e635] hover:shadow-[0_6px_0_rgba(163,230,53,0.5)] transition-all duration-200"
+        >
+          {/* Illustration */}
+          <div className="w-full rounded-2xl bg-[#f8fafc] border border-[#e2e8f0] overflow-hidden flex items-center justify-center"
+            style={{ height: 140 }}>
+            {activeStep.illustration}
           </div>
-        ))}
+
+          {/* Step number badge */}
+          <div className="self-start bg-[#a3e635] text-[#064e3b] font-black text-[10px] sm:text-xs px-2 sm:px-3 py-0.5 sm:py-1 rounded-full border border-[#65a30d]">
+            {activeStep.number}
+          </div>
+
+          {/* Title */}
+          <p className="text-[#0f172a] font-black text-sm sm:text-base text-center leading-tight w-full">
+            {activeStep.title}
+          </p>
+
+          {/* Description */}
+          <p className="text-[#64748b] text-[10px] sm:text-xs text-center leading-relaxed min-h-[40px] flex items-center justify-center">
+            {activeStep.description}
+          </p>
+        </div>
+
+        {/* Next Button */}
+        <button
+          onClick={handleNext}
+          disabled={currentIndex === steps.length - 1}
+          className="w-8 h-8 sm:w-10 sm:h-10 shrink-0 rounded-full flex items-center justify-center bg-white border-2 border-[#e2e8f0] text-[#475569] shadow-[0_2px_0_#e2e8f0] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#f8fafc] hover:-translate-y-0.5 hover:border-[#cbd5e1] hover:shadow-[0_4px_0_#cbd5e1] transition-all active:translate-y-0 active:shadow-none"
+          aria-label="Next step"
+        >
+          <svg viewBox="0 0 24 24" className="w-4 h-4 sm:w-5 sm:h-5 fill-none stroke-current stroke-[3]" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
       </div>
 
-      {/* Scroll hint — shown only on small screens */}
-      <p className="text-center text-[#94a3b8] text-[10px] font-semibold mt-2 sm:hidden">
-        ← swipe to see all steps →
-      </p>
+      {/* Dot Indicators */}
+      <div className="flex justify-center items-center gap-2 mt-6">
+        {steps.map((_, idx) => (
+          <button
+            key={idx}
+            onClick={() => setCurrentIndex(idx)}
+            className={`h-2 rounded-full transition-all duration-300 ${idx === currentIndex ? 'w-5 bg-[#a3e635]' : 'w-2 bg-[#cbd5e1] hover:bg-[#94a3b8]'}`}
+            aria-label={`Go to step ${idx + 1}`}
+          />
+        ))}
+      </div>
     </section>
   );
 }

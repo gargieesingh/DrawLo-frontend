@@ -79,7 +79,7 @@ export default function Lobby() {
     >
       {/* Top Bar */}
       <div className="bg-white/80 backdrop-blur-md border-b-2 border-[#e2e8f0] px-8 py-5 flex justify-between items-center shadow-sm shrink-0 z-10">
-        <h1 className="text-2xl font-black text-[#0f172a] tracking-tight drop-shadow-[0_2px_0_rgba(163,230,53,1)]">🎨 DrawLo</h1>
+        <h1 className="text-2xl font-black text-[#0f172a] tracking-tight drop-shadow-[0_2px_0_rgba(163,230,53,1)]">DrawLo</h1>
         <div className="bg-[#f1f5f9] text-[#475569] font-black uppercase tracking-widest text-xs px-4 py-2 rounded-full border border-[#cbd5e1]">
           Lobby area
         </div>
@@ -193,7 +193,7 @@ export default function Lobby() {
                       onClick={handleStart}
                       className="btn-game w-full bg-[#a3e635] text-[#064e3b] disabled:bg-[#f1f5f9] disabled:text-[#94a3b8] disabled:border-[#cbd5e1] disabled:transform-none disabled:active:translate-y-0 rounded-2xl px-8 py-5 text-xl tracking-wide border-2 border-[#064e3b] border-b-[6px] hover:bg-[#bef264]"
                     >
-                      🚀 Start Game
+                      Start Game
                     </button>
                     {showNoUserMsg && (
                       <div className="bg-[#ef4444] text-white text-xs font-bold text-center p-2 rounded-xl border-2 border-[#b91c1c] shadow-[0_3px_0_#b91c1c] mx-auto w-max px-4">
