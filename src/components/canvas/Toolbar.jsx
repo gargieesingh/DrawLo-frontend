@@ -49,7 +49,7 @@ const FillIcon = () => (
 );
 
 const TrashIcon = () => (
-  <svg viewBox="0 0 24 24" className="w-[16px] h-[16px]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg viewBox="0 0 24 24" className="w-[18px] h-[18px] lg:w-6 lg:h-6 drop-shadow-sm" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     {/* Handle */}
     <path d="M9 3h6" />
     {/* Lid */}
@@ -277,12 +277,11 @@ export default function Toolbar() {
 
         <div className="h-1.5 w-10 bg-[#e2e8f0] rounded-full shrink-0 mx-auto"></div>
 
-        {/* Clear */}
         <button
           onClick={() => socket.emit('clear_canvas')}
           title="Clear Canvas"
-          className="btn-game bg-[#ef4444] text-white hover:bg-[#f87171] border-b-[4px] border-[#b91c1c] rounded-2xl px-4 py-2.5 font-black text-lg flex items-center shrink-0"
-        >🗑️</button>
+          className="btn-game bg-[#ef4444] text-white hover:bg-[#f87171] border-b-[4px] border-[#b91c1c] rounded-2xl px-3 py-2.5 flex items-center justify-center shrink-0"
+        ><TrashIcon /></button>
 
       </div>
     </>

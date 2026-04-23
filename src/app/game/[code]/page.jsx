@@ -149,61 +149,36 @@ export default function Game() {
 
       {/* Main Layout */}
       {/* Large screens: 3-column row | Small/medium: canvas top, sidebars bottom */}
-      <div className="flex flex-1 min-h-0 w-full max-w-[1600px] mx-auto p-2 lg:p-4 gap-2 lg:gap-4 flex-col lg:flex-row">
+      <div className="flex-1 w-full max-w-[1600px] mx-auto p-2 lg:p-4 grid grid-cols-2 lg:grid-cols-[280px_minmax(0,1fr)_320px] grid-rows-[3fr_2fr] lg:grid-rows-1 gap-1.5 sm:gap-2 lg:gap-4 min-h-0">
 
-        {/* === SMALL/MEDIUM: Canvas on top — ~60% of height === */}
-        <main className="lg:hidden w-full flex flex-col items-center justify-center [flex:3_3_0%] min-h-0 overflow-hidden">
+        {/* Canvas - Top on mobile, Center on desktop */}
+        <main className="col-span-2 row-start-1 row-end-2 lg:col-span-1 lg:col-start-2 lg:col-end-3 lg:row-start-1 lg:row-end-2 flex flex-col items-center justify-center min-h-0 overflow-hidden min-w-0 lg:p-2">
            <Canvas />
         </main>
 
-        {/* === SMALL/MEDIUM: Bottom row with leaderboard + chat — ~40% of height === */}
-        <div className="lg:hidden flex flex-row gap-1.5 sm:gap-4 [flex:2_2_0%] min-h-0">
-          {/* Leaderboard */}
-          <aside className="w-1/2 flex flex-col bg-white rounded-[20px] sm:rounded-[24px] border-2 border-[#e2e8f0] shadow-sm overflow-hidden min-w-0">
-             <div className="bg-[#f8fafc] text-[#475569] py-1.5 sm:py-2 px-2 sm:px-3 border-b-2 border-[#e2e8f0] shrink-0">
-                <h3 className="font-black uppercase tracking-widest text-[9px] sm:text-[10px] flex items-center gap-1">🏆 <span>Board</span></h3>
-             </div>
-             <div className="flex-1 overflow-y-auto custom-scrollbar p-0.5 sm:p-1">
-               <PlayerList />
-             </div>
-          </aside>
-
-          {/* Chat */}
-          <aside className="w-1/2 flex flex-col bg-white rounded-[20px] sm:rounded-[24px] border-2 border-[#e2e8f0] shadow-sm overflow-hidden min-w-0">
-             <div className="bg-[#f8fafc] text-[#475569] py-1.5 sm:py-2 px-2 sm:px-3 border-b-2 border-[#e2e8f0] shrink-0">
-                <h3 className="font-black uppercase tracking-widest text-[9px] sm:text-[10px] flex items-center gap-1">💬 <span>Chat</span></h3>
-             </div>
-             <div className="flex-1 overflow-y-auto custom-scrollbar p-0.5 sm:p-1 relative bg-[#f0fdf4]/50">
-               <Chat />
-             </div>
-             <div className="p-1.5 sm:p-2 bg-[#f8fafc] border-t-2 border-[#e2e8f0] shrink-0">
-               <ChatInput />
-             </div>
-          </aside>
-        </div>
-
-        {/* === LARGE SCREENS: Original 3-column layout === */}
-        <aside className="hidden lg:flex w-[280px] shrink-0 flex-col bg-white rounded-[32px] border-2 border-[#e2e8f0] shadow-[0_8px_20px_rgba(0,0,0,0.05)] overflow-hidden relative">
-           <div className="bg-[#f8fafc] text-[#475569] py-3 px-5 border-b-2 border-[#e2e8f0] shrink-0 z-10">
-              <h3 className="font-black uppercase tracking-widest text-sm flex items-center gap-2">🏆 Leaderboard</h3>
+        {/* Leaderboard - Bottom left on mobile, Left on desktop */}
+        <aside className="col-start-1 col-end-2 row-start-2 row-end-3 lg:col-start-1 lg:col-end-2 lg:row-start-1 lg:row-end-2 flex flex-col bg-white border-2 border-[#e2e8f0] overflow-hidden min-w-0 relative rounded-[20px] sm:rounded-[24px] lg:rounded-[32px] shadow-sm lg:shadow-[0_8px_20px_rgba(0,0,0,0.05)]">
+           <div className="bg-[#f8fafc] text-[#475569] border-b-2 border-[#e2e8f0] shrink-0 z-10 py-1.5 sm:py-2 lg:py-3 px-2 sm:px-3 lg:px-5">
+              <h3 className="font-black uppercase tracking-widest flex items-center gap-1 lg:gap-2 text-[9px] sm:text-[10px] lg:text-sm">
+                 🏆 <span className="lg:hidden">Board</span><span className="hidden lg:inline">Leaderboard</span>
+              </h3>
            </div>
-           <div className="flex-1 overflow-y-auto custom-scrollbar p-3">
+           <div className="flex-1 overflow-y-auto custom-scrollbar p-0.5 sm:p-1 lg:p-3">
              <PlayerList />
            </div>
         </aside>
 
-        <main className="hidden lg:flex flex-1 min-w-0 flex-col items-center justify-center p-2">
-           <Canvas />
-        </main>
-
-        <aside className="hidden lg:flex w-[320px] shrink-0 flex-col bg-white rounded-[32px] border-2 border-[#e2e8f0] shadow-[0_8px_20px_rgba(0,0,0,0.05)] overflow-hidden relative">
-           <div className="bg-[#f8fafc] text-[#475569] py-3 px-5 border-b-2 border-[#e2e8f0] shrink-0 z-10">
-              <h3 className="font-black uppercase tracking-widest text-sm flex items-center gap-2">💬 Chat Area</h3>
+        {/* Chat - Bottom right on mobile, Right on desktop */}
+        <aside className="col-start-2 col-end-3 row-start-2 row-end-3 lg:col-start-3 lg:col-end-4 lg:row-start-1 lg:row-end-2 flex flex-col bg-white border-2 border-[#e2e8f0] overflow-hidden min-w-0 relative rounded-[20px] sm:rounded-[24px] lg:rounded-[32px] shadow-sm lg:shadow-[0_8px_20px_rgba(0,0,0,0.05)]">
+           <div className="bg-[#f8fafc] text-[#475569] border-b-2 border-[#e2e8f0] shrink-0 z-10 py-1.5 sm:py-2 lg:py-3 px-2 sm:px-3 lg:px-5">
+              <h3 className="font-black uppercase tracking-widest flex items-center gap-1 lg:gap-2 text-[9px] sm:text-[10px] lg:text-sm">
+                 💬 <span className="lg:hidden">Chat</span><span className="hidden lg:inline">Chat Area</span>
+              </h3>
            </div>
-           <div className="flex-1 overflow-y-auto custom-scrollbar p-3 relative bg-[#f0fdf4]/50">
+           <div className="flex-1 overflow-y-auto custom-scrollbar relative bg-[#f0fdf4]/50 p-0.5 sm:p-1 lg:p-3">
              <Chat />
            </div>
-           <div className="p-3 bg-[#f8fafc] border-t-2 border-[#e2e8f0] shrink-0">
+           <div className="bg-[#f8fafc] border-t-2 border-[#e2e8f0] shrink-0 p-1.5 sm:p-2 lg:p-3">
              <ChatInput />
            </div>
         </aside>
