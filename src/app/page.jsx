@@ -119,7 +119,7 @@ export default function Home() {
                      <span className="text-3xl">{selectedAvatar}</span>
                    )}
                 </div>
-                <span>Select an Avatar</span>
+                <span className='text-[15px] font-bold text-[#475569]'>Select an Avatar</span>
               </div>
               <span className={`transform transition-transform ${isAvatarDropdownOpen ? 'rotate-180' : ''}`}>
                 ▼
@@ -167,9 +167,9 @@ export default function Home() {
             }`}
           >
             <span className="block text-xl font-black">Quick Play</span>
-            <span className={`block text-xs font-bold mt-0.5 ${isConnecting ? 'text-[#94a3b8]' : 'text-[#064e3b] opacity-80'}`}>
+            {/* <span className={`block text-xs font-bold mt-0.5 ${isConnecting ? 'text-[#94a3b8]' : 'text-[#064e3b] opacity-80'}`}>
               {isConnecting ? 'Connecting...' : 'Auto-match with other players'}
-            </span>
+            </span> */}
           </button>
 
           {/* ── Separator ── */}

@@ -175,7 +175,7 @@ export default function Lobby() {
           )}
 
           {/* Right Column: Players Grid */}
-          <div className={`bg-white border-2 border-[#e2e8f0] rounded-[32px] p-8 shadow-[0_8px_20px_rgba(0,0,0,0.05)] flex flex-col h-[650px] ${isQuickPlay ? 'w-full max-w-2xl mx-auto' : 'flex-[1.2]'}`}>
+          <div className={`bg-white border-2 border-[#e2e8f0] rounded-[32px] p-8 shadow-[0_8px_20px_rgba(0,0,0,0.05)] flex flex-col h-[60vh] md:h-[650px] ${isQuickPlay ? 'w-full max-w-2xl mx-auto' : 'flex-[1.2]'}`}>
             <div className="flex justify-between items-center mb-6">
                <h3 className="text-[#0f172a] font-black text-xl tracking-wide">Players Inside</h3>
                <div className="bg-[#a3e635] text-[#064e3b] font-black px-4 py-1.5 rounded-full border-2 border-[#064e3b] shadow-[0_2px_0_#064e3b]">
@@ -184,7 +184,7 @@ export default function Lobby() {
             </div>
 
             {players.length === 1 && countdown === null && (
-              <div className="bg-[#f0fdf4] text-[#15803d] text-xs font-bold text-center p-3 rounded-xl mb-4 w-full px-4 animate-pulse border border-[#bbf7d0]">
+              <div className="bg-[#f0fdf4] text-[#15803d] text-xs font-bold text-center py-3 px-2 rounded-xl mb-4 w-full animate-pulse border border-[#bbf7d0]">
                 ⏳ Waiting for 1 more player to auto-start…
               </div>
             )}
@@ -238,12 +238,9 @@ export default function Lobby() {
                         )}
 
                       </div>
-                      <div className="flex flex-col items-center max-w-full">
+                      <div className="flex flex-col items-center max-w-full mt-1">
                          <span className="text-[#0f172a] font-bold text-base truncate max-w-[120px]" title={player.name}>
                            {player.name}
-                         </span>
-                         <span className="bg-[#e2e8f0] text-[#475569] text-[10px] font-black uppercase px-2 py-0.5 rounded-full mt-1 border border-[#cbd5e1]">
-                           0 pts
                          </span>
                       </div>
                     </div>
