@@ -6,10 +6,11 @@ import { useGame } from '../../context/GameContext';
 
 export default function ChatInput() {
   const { state } = useGame();
-  const { gameStatus, isMyTurn } = state;
+  const { gameStatus, isMyTurn, guessedWord } = state;
   const [text, setText] = useState('');
 
   const isDrawingPhase = gameStatus === 'drawing';
+  const hasAlreadyGuessed = !!guessedWord; // true after a correct guess this turn
   const disabled = isMyTurn && isDrawingPhase;
 
   function handleSubmit(e) {
@@ -17,7 +18,9 @@ export default function ChatInput() {
     const val = text.trim();
     if (!val || disabled) return;
 
-    if (isDrawingPhase) {
+    // If in drawing phase AND the player hasn't correctly guessed yet → treat as a guess attempt
+    // If already guessed (or not in drawing phase) → send as a plain chat message
+    if (isDrawingPhase && !hasAlreadyGuessed) {
       socket.emit('guess', { text: val });
     } else {
       socket.emit('chat_message', { text: val });

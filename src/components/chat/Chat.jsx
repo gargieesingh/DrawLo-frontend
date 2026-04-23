@@ -7,7 +7,7 @@ const AVATAR_COLORS = ['#e94560','#4ecca3','#f7b731','#a29bfe','#fd79a8','#00cec
 
 export default function Chat() {
   const { state } = useGame();
-  const { messages } = state;
+  const { messages, playerId } = state;
   const bottomRef = useRef(null);
 
   // Auto-scroll to bottom on new messages
@@ -18,6 +18,7 @@ export default function Chat() {
   function renderMessage(msg, index) {
     const key = msg._id || `${msg.id}-${msg.text}-${index}`;
 
+    // ── System notification (centered pill) ──────────────────────────────────
     if (msg.type === 'system') {
       return (
         <div key={key} className="flex justify-center items-center my-[1px] sm:my-0.5 w-full">
@@ -28,6 +29,7 @@ export default function Chat() {
       );
     }
 
+    // ── Correct-guess celebration (centered pill) ─────────────────────────────
     if (msg.type === 'correct') {
       return (
         <div key={key} className="flex justify-center my-1.5 sm:my-2 w-full animate-bounce-slow">
@@ -39,7 +41,7 @@ export default function Chat() {
       );
     }
 
-    // Determine consistent name color 
+    // ── Shared color + avatar logic ───────────────────────────────────────────
     let charCode = 0;
     if (msg.id) charCode = [...msg.id].reduce((a, c) => a + c.charCodeAt(0), 0);
     else if (msg.name) charCode = [...msg.name].reduce((a, c) => a + c.charCodeAt(0), 0);
@@ -48,16 +50,39 @@ export default function Chat() {
     const sender = state.players.find(p => p.id === msg.id);
     const avatar = sender?.avatar || msg.avatar || null;
 
+    const isOwn = msg.id && msg.id === playerId;
+
+    function AvatarBubble({ faded }) {
+      return (
+        <div
+          className={`relative w-5 h-5 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-white text-[9px] sm:text-xs font-black shadow-[inset_0_-2px_rgba(0,0,0,0.2)] shrink-0 overflow-hidden${faded ? ' opacity-50 border-2 border-transparent' : ''}`}
+          style={{ backgroundColor: colorTheme }}
+        >
+          {avatar ? (
+            avatar.startsWith('/') ? <img src={avatar} alt="avatar" className="w-full h-full object-cover scale-[1.3] pointer-events-none" /> : avatar
+          ) : (
+            msg.name.charAt(0).toUpperCase()
+          )}
+        </div>
+      );
+    }
+
+    // ── Guess bubble ──────────────────────────────────────────────────────────
     if (msg.type === 'guess') {
+      if (isOwn) {
+        return (
+          <div key={key} className="flex flex-row-reverse gap-1.5 sm:gap-2 my-1 sm:my-2 items-end">
+            <AvatarBubble faded={false} />
+            <div className="bg-[#a3e635] border-2 border-[#65a30d] text-[#064e3b] px-2 sm:px-3 py-1 sm:py-2 rounded-[12px] sm:rounded-[16px] rounded-br-sm max-w-[85%] break-words shadow-sm flex flex-col gap-0.5 items-end">
+              <span style={{ color: '#065f46' }} className="font-black text-[10px] sm:text-xs leading-tight">You</span>
+              <span className="opacity-90 font-semibold text-xs sm:text-sm">{msg.text}</span>
+            </div>
+          </div>
+        );
+      }
       return (
         <div key={key} className="flex gap-1.5 sm:gap-2 my-1 sm:my-2 items-end">
-          <div className="relative w-5 h-5 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-white text-[9px] sm:text-xs font-black shadow-[inset_0_-2px_rgba(0,0,0,0.2)] shrink-0 overflow-hidden" style={{ backgroundColor: colorTheme }}>
-             {avatar ? (
-               avatar.startsWith('/') ? <img src={avatar} alt="avatar" className="w-full h-full object-cover scale-[1.3] pointer-events-none" /> : avatar
-             ) : (
-               msg.name.charAt(0).toUpperCase()
-             )}
-          </div>
+          <AvatarBubble faded={false} />
           <div className="bg-white border-2 border-[#e2e8f0] text-[#0f172a] px-2 sm:px-3 py-1 sm:py-2 rounded-[12px] sm:rounded-[16px] rounded-bl-sm max-w-[85%] break-words shadow-sm flex flex-col gap-0.5">
             <span style={{ color: colorTheme }} className="font-black text-[10px] sm:text-xs leading-tight">{msg.name}</span>
             <span className="opacity-90 font-semibold text-xs sm:text-sm">{msg.text}</span>
@@ -66,20 +91,25 @@ export default function Chat() {
       );
     }
 
-    // type === 'chat'
-    return (
-      <div key={key} className="flex gap-1.5 sm:gap-2 my-1 sm:my-2 items-end">
-         <div className="relative w-5 h-5 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-white text-[9px] sm:text-xs font-black shadow-[inset_0_-2px_rgba(0,0,0,0.2)] shrink-0 opacity-50 border-2 border-transparent overflow-hidden" style={{ backgroundColor: colorTheme }}>
-             {avatar ? (
-               avatar.startsWith('/') ? <img src={avatar} alt="avatar" className="w-full h-full object-cover scale-[1.3] pointer-events-none" /> : avatar
-             ) : (
-               msg.name.charAt(0).toUpperCase()
-             )}
-          </div>
-          <div className="bg-[#f8fafc] border-2 border-[#f1f5f9] text-[#475569] px-2 sm:px-3 py-1 sm:py-2 rounded-[12px] sm:rounded-[16px] rounded-bl-sm max-w-[85%] break-words shadow-sm flex flex-col gap-0.5">
-            <span style={{ color: colorTheme }} className="font-black opacity-100 text-[10px] sm:text-xs leading-tight">{msg.name}</span>
+    // ── Chat bubble (type === 'chat') ─────────────────────────────────────────
+    if (isOwn) {
+      return (
+        <div key={key} className="flex flex-row-reverse gap-1.5 sm:gap-2 my-1 sm:my-2 items-end">
+          <AvatarBubble faded={true} />
+          <div className="bg-[#e0f2fe] border-2 border-[#bae6fd] text-[#0c4a6e] px-2 sm:px-3 py-1 sm:py-2 rounded-[12px] sm:rounded-[16px] rounded-br-sm max-w-[85%] break-words shadow-sm flex flex-col gap-0.5 items-end">
+            <span style={{ color: '#0369a1' }} className="font-black opacity-100 text-[10px] sm:text-xs leading-tight">You</span>
             <span className="font-semibold text-xs sm:text-sm">{msg.text}</span>
           </div>
+        </div>
+      );
+    }
+    return (
+      <div key={key} className="flex gap-1.5 sm:gap-2 my-1 sm:my-2 items-end">
+        <AvatarBubble faded={true} />
+        <div className="bg-[#f8fafc] border-2 border-[#f1f5f9] text-[#475569] px-2 sm:px-3 py-1 sm:py-2 rounded-[12px] sm:rounded-[16px] rounded-bl-sm max-w-[85%] break-words shadow-sm flex flex-col gap-0.5">
+          <span style={{ color: colorTheme }} className="font-black opacity-100 text-[10px] sm:text-xs leading-tight">{msg.name}</span>
+          <span className="font-semibold text-xs sm:text-sm">{msg.text}</span>
+        </div>
       </div>
     );
   }
