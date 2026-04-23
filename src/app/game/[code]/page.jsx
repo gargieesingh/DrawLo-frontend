@@ -50,7 +50,7 @@ export default function Game() {
 
   return (
     <div 
-      className="h-screen flex flex-col bg-[#f0fdf4] overflow-hidden"
+      className="fixed inset-0 w-full h-[100dvh] max-h-[100dvh] flex flex-col bg-[#f0fdf4] overflow-hidden overscroll-none"
       style={{
         backgroundImage: 'radial-gradient(circle, rgba(0,0,0,0.05) 2px, transparent 2px)',
         backgroundSize: '30px 30px'
