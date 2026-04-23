@@ -88,11 +88,13 @@ export default function Chat() {
       );
     }
 
+    const marginClasses = `${showName ? 'mt-1 sm:mt-2' : 'mt-[2px] sm:mt-0.5'} ${showAvatar ? 'mb-1 sm:mb-2' : 'mb-[2px] sm:mb-0.5'}`;
+
     // ── Guess bubble ──────────────────────────────────────────────────────────
     if (msg.type === 'guess') {
       if (isOwn) {
         return (
-          <div key={key} className="flex flex-row-reverse gap-1.5 sm:gap-2 my-1 sm:my-2 items-end">
+          <div key={key} className={`flex flex-row-reverse gap-1.5 sm:gap-2 items-end ${marginClasses}`}>
             <AvatarBubble faded={false} />
             <div className="bg-[#a3e635] border-2 border-[#65a30d] text-[#064e3b] px-2 sm:px-3 py-1 sm:py-2 rounded-[12px] sm:rounded-[16px] rounded-br-sm max-w-[85%] break-words shadow-sm flex flex-col gap-0.5 items-end">
               {showName && <span style={{ color: '#065f46' }} className="font-black text-[10px] sm:text-xs leading-tight">You</span>}
@@ -102,7 +104,7 @@ export default function Chat() {
         );
       }
       return (
-        <div key={key} className="flex gap-1.5 sm:gap-2 my-1 sm:my-2 items-end">
+        <div key={key} className={`flex gap-1.5 sm:gap-2 items-end ${marginClasses}`}>
           <AvatarBubble faded={false} />
           <div className="bg-white border-2 border-[#e2e8f0] text-[#0f172a] px-2 sm:px-3 py-1 sm:py-2 rounded-[12px] sm:rounded-[16px] rounded-bl-sm max-w-[85%] break-words shadow-sm flex flex-col gap-0.5">
             {showName && <span style={{ color: colorTheme }} className="font-black text-[10px] sm:text-xs leading-tight">{msg.name}</span>}
@@ -115,7 +117,7 @@ export default function Chat() {
     // ── Chat bubble (type === 'chat') ─────────────────────────────────────────
     if (isOwn) {
       return (
-        <div key={key} className="flex flex-row-reverse gap-1.5 sm:gap-2 my-1 sm:my-2 items-end">
+        <div key={key} className={`flex flex-row-reverse gap-1.5 sm:gap-2 items-end ${marginClasses}`}>
           <AvatarBubble faded={true} />
           <div className="bg-[#e0f2fe] border-2 border-[#bae6fd] text-[#0c4a6e] px-2 sm:px-3 py-1 sm:py-2 rounded-[12px] sm:rounded-[16px] rounded-br-sm max-w-[85%] break-words shadow-sm flex flex-col gap-0.5 items-end">
             {showName && <span style={{ color: '#0369a1' }} className="font-black opacity-100 text-[10px] sm:text-xs leading-tight">You</span>}
@@ -125,7 +127,7 @@ export default function Chat() {
       );
     }
     return (
-      <div key={key} className="flex gap-1.5 sm:gap-2 my-1 sm:my-2 items-end">
+      <div key={key} className={`flex gap-1.5 sm:gap-2 items-end ${marginClasses}`}>
         <AvatarBubble faded={true} />
         <div className="bg-[#f8fafc] border-2 border-[#f1f5f9] text-[#475569] px-2 sm:px-3 py-1 sm:py-2 rounded-[12px] sm:rounded-[16px] rounded-bl-sm max-w-[85%] break-words shadow-sm flex flex-col gap-0.5">
           {showName && <span style={{ color: colorTheme }} className="font-black opacity-100 text-[10px] sm:text-xs leading-tight">{msg.name}</span>}

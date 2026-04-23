@@ -86,146 +86,131 @@ export default function Lobby() {
       </div>
 
       <div className="flex-1 p-4 md:p-8 flex justify-center items-start">
-        <div className="w-full max-w-5xl flex flex-col md:flex-row gap-8">
+        <div className="w-full max-w-5xl flex flex-col-reverse md:flex-row gap-8">
           
           {/* Left Column: Room Info & Settings */}
-          <div className="flex-[0.8] flex flex-col gap-8">
-            
-            {/* Room Code Bubble */}
-            <div className="bg-white border-2 border-[#e2e8f0] rounded-[32px] p-4 sm:p-8 shadow-[0_8px_20px_rgba(0,0,0,0.05)] relative">
-              <div className="absolute -top-4 -left-3 bg-[#f7b731] text-[#713f12] font-black uppercase text-xs px-3 py-1.5 rounded-full border-2 border-[#713f12] shadow-[0_4px_0_#713f12] rotate-[-5deg] whitespace-nowrap">
-                Room Code
-              </div>
-              <div className="flex items-center gap-2 sm:gap-4 justify-between mt-2">
-                <span className="text-2xl sm:text-5xl font-black text-[#0f172a] tracking-[0.2em] drop-shadow-[0_2px_0_rgba(163,230,53,1)] truncate">
-                  {roomCode || code}
-                </span>
-                <button 
-                  onClick={handleCopy}
-                  className="btn-game bg-[#f1f5f9] text-[#475569] border-2 border-[#cbd5e1] border-b-4 rounded-xl px-3 sm:px-5 py-2 sm:py-3 hover:bg-[#e2e8f0] text-sm shrink-0"
-                >
-                  {copied ? 'Copied!' : 'Copy'}
-                </button>
-              </div>
-            </div>
-
-            {/* Settings */}
-            <div className="bg-white border-2 border-[#e2e8f0] rounded-[32px] p-8 shadow-[0_8px_20px_rgba(0,0,0,0.05)] flex-col flex h-full">
-              <h3 className="text-[#0f172a] font-black uppercase tracking-wider mb-6 flex items-center gap-3">
-                <span className="p-2 bg-[#f1f5f9] rounded-xl leading-none">⚙️</span> Game Settings
-              </h3>
+          {!isQuickPlay && (
+            <div className="flex-[0.8] flex flex-col gap-8">
               
-              <div className="flex flex-col gap-4 flex-1 mb-6">
-                <div className="opacity-60 pointer-events-none flex flex-col gap-4">
-                  <div className="flex justify-between items-center bg-[#f8fafc] p-4 rounded-2xl border-2 border-[#e2e8f0]">
-                    <span className="text-[#475569] font-bold">Rounds</span>
-                    <div className="flex items-center gap-3">
-                      <button className="bg-[#e2e8f0] w-8 h-8 rounded-full text-[#475569] font-black flex items-center justify-center">-</button>
-                      <span className="text-[#059669] font-black text-xl w-6 text-center">{settings?.rounds || 3}</span>
-                      <button className="bg-[#e2e8f0] w-8 h-8 rounded-full text-[#475569] font-black flex items-center justify-center">+</button>
-                    </div>
-                  </div>
-
-                  <div className="flex justify-between items-center bg-[#f8fafc] p-4 rounded-2xl border-2 border-[#e2e8f0]">
-                    <span className="text-[#475569] font-bold">Draw Time (s)</span>
-                    <div className="flex items-center gap-3">
-                      <button className="bg-[#e2e8f0] w-8 h-8 rounded-full text-[#475569] font-black flex items-center justify-center">-</button>
-                      <span className="text-[#059669] font-black text-xl w-10 text-center">{settings?.drawTime || 80}</span>
-                      <button className="bg-[#e2e8f0] w-8 h-8 rounded-full text-[#475569] font-black flex items-center justify-center">+</button>
-                    </div>
-                  </div>
-
-                  <div className="flex justify-between items-center bg-[#f8fafc] p-4 rounded-2xl border-2 border-[#e2e8f0]">
-                    <span className="text-[#475569] font-bold">Max Players</span>
-                    <div className="flex items-center gap-3">
-                      <button className="bg-[#e2e8f0] w-8 h-8 rounded-full text-[#475569] font-black flex items-center justify-center">-</button>
-                      <span className="text-[#059669] font-black text-xl w-6 text-center">{settings?.maxPlayers || 8}</span>
-                      <button className="bg-[#e2e8f0] w-8 h-8 rounded-full text-[#475569] font-black flex items-center justify-center">+</button>
-                    </div>
-                  </div>
+              {/* Room Code Bubble */}
+              <div className="bg-white border-2 border-[#e2e8f0] rounded-[32px] p-4 sm:p-8 shadow-[0_8px_20px_rgba(0,0,0,0.05)] relative">
+                <div className="absolute -top-4 -left-3 bg-[#f7b731] text-[#713f12] font-black uppercase text-xs px-3 py-1.5 rounded-full border-2 border-[#713f12] shadow-[0_4px_0_#713f12] rotate-[-5deg] whitespace-nowrap">
+                  Room Code
                 </div>
+                <div className="flex items-center gap-2 sm:gap-4 justify-between mt-2">
+                  <span className="text-2xl sm:text-5xl font-black text-[#0f172a] tracking-[0.2em] drop-shadow-[0_2px_0_rgba(163,230,53,1)] truncate">
+                    {roomCode || code}
+                  </span>
+                  <button 
+                    onClick={handleCopy}
+                    className="btn-game bg-[#f1f5f9] text-[#475569] border-2 border-[#cbd5e1] border-b-4 rounded-xl px-3 sm:px-5 py-2 sm:py-3 hover:bg-[#e2e8f0] text-sm shrink-0"
+                  >
+                    {copied ? 'Copied!' : 'Copy'}
+                  </button>
+                </div>
+              </div>
 
-                {!isQuickPlay && (
-                  <div className="flex flex-col gap-2 mt-4">
-                    <span className="text-[#475569] font-bold text-sm tracking-wide">Custom Words (comma separated)</span>
+              {/* Settings */}
+              <div className="bg-white border-2 border-[#e2e8f0] rounded-[32px] p-5 sm:p-6 shadow-[0_8px_20px_rgba(0,0,0,0.05)] flex-col flex h-full">
+                <h3 className="text-[#0f172a] font-black text-sm uppercase tracking-wider mb-4 flex items-center gap-2">
+                  <span className="p-1.5 bg-[#f1f5f9] rounded-xl leading-none text-base">⚙️</span> Game Settings
+                </h3>
+                
+                <div className="flex flex-col gap-2 sm:gap-3 flex-1 mb-4">
+                  <div className="flex flex-col gap-2 sm:gap-3">
+                    <div className="flex justify-between items-center bg-[#f8fafc] px-4 py-2.5 rounded-xl border-2 border-[#e2e8f0]">
+                      <span className="text-[#475569] font-bold text-xs sm:text-sm">Rounds</span>
+                      <span className="text-[#059669] font-black text-base sm:text-lg">{settings?.rounds || 3}</span>
+                    </div>
+
+                    <div className="flex justify-between items-center bg-[#f8fafc] px-4 py-2.5 rounded-xl border-2 border-[#e2e8f0]">
+                      <span className="text-[#475569] font-bold text-xs sm:text-sm">Draw Time (s)</span>
+                      <span className="text-[#059669] font-black text-base sm:text-lg">{settings?.drawTime || 80}</span>
+                    </div>
+
+                    <div className="flex justify-between items-center bg-[#f8fafc] px-4 py-2.5 rounded-xl border-2 border-[#e2e8f0]">
+                      <span className="text-[#475569] font-bold text-xs sm:text-sm">Max Players</span>
+                      <span className="text-[#059669] font-black text-base sm:text-lg">{settings?.maxPlayers || 8}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col gap-1.5 mt-2">
+                    <span className="text-[#475569] font-bold text-xs tracking-wide">Custom Words (comma separated)</span>
                     <textarea
                       value={localWords}
                       onChange={handleWordsChange}
                       onBlur={handleWordsBlur}
                       readOnly={!isHost}
                       placeholder={isHost ? "Apple, Banana, Car..." : "No custom words set."}
-                      className={`w-full bg-[#f8fafc] border-2 border-[#e2e8f0] rounded-2xl p-4 text-[#0f172a] focus:outline-none focus:border-[#a3e635] resize-none h-24 ${!isHost ? 'opacity-70' : 'shadow-inner'}`}
+                      className={`w-full bg-[#f8fafc] border-2 border-[#e2e8f0] rounded-xl p-3 text-sm text-[#0f172a] focus:outline-none focus:border-[#a3e635] resize-none h-20 ${!isHost ? 'opacity-70' : 'shadow-inner'}`}
                     />
-                    {isHost && <span className="text-[#94a3b8] text-[10px] font-bold">Options will be exclusively chosen from here if provided.</span>}
+                    {isHost && <span className="text-[#94a3b8] text-[9px] font-bold">Options will be exclusively chosen from here if provided.</span>}
                   </div>
-                )}
-              </div>
+                </div>
 
-              <div className="pt-2 flex flex-col gap-3">
-
-                {/* ── Auto-start countdown (shown to ALL players) ───────────── */}
-                {countdown !== null && (
-                  <div className="flex flex-col items-center gap-2 py-3 bg-[#f0fdf4] rounded-2xl border-[3px] border-[#22c55e] shadow-[0_4px_0_#22c55e]">
-                    <div className="relative w-16 h-16">
-                      <svg className="w-16 h-16 -rotate-90" viewBox="0 0 64 64">
-                        <circle cx="32" cy="32" r="28" fill="none" stroke="#e2e8f0" strokeWidth="5" />
-                        <circle
-                          cx="32" cy="32" r="28" fill="none"
-                          stroke="#22c55e" strokeWidth="5"
-                          strokeDasharray={`${2 * Math.PI * 28}`}
-                          strokeDashoffset={`${2 * Math.PI * 28 * (1 - countdown / 10)}`}
-                          strokeLinecap="round"
-                          style={{ transition: 'stroke-dashoffset 0.9s linear' }}
-                        />
-                      </svg>
-                      <span className="absolute inset-0 flex items-center justify-center text-2xl font-black text-[#0f172a]">
-                        {countdown}
-                      </span>
+                <div className="pt-2 flex flex-col gap-3">
+                  {/* ── Host Start button (manual override always available) ──── */}
+                  {isHost ? (
+                    <div className="pt-2 flex flex-col gap-3">
+                      <button
+                        onClick={handleStart}
+                        className="btn-game w-full bg-[#a3e635] text-[#064e3b] disabled:bg-[#f1f5f9] disabled:text-[#94a3b8] disabled:border-[#cbd5e1] disabled:transform-none disabled:active:translate-y-0 rounded-2xl px-8 py-5 text-xl tracking-wide border-2 border-[#064e3b] border-b-[6px] hover:bg-[#bef264]"
+                      >
+                        Start Game
+                      </button>
+                      {showNoUserMsg && (
+                        <div className="bg-[#ef4444] text-white text-xs font-bold text-center p-2 rounded-xl border-2 border-[#b91c1c] shadow-[0_3px_0_#b91c1c] mx-auto w-max px-4">
+                          no user online
+                        </div>
+                      )}
                     </div>
-                    <span className="text-[#15803d] font-black text-sm uppercase tracking-widest">Game starting soon!</span>
-                  </div>
-                )}
-
-                {/* ── Host Start button (manual override always available) ──── */}
-                {isHost ? (
-                  <div className="pt-2 flex flex-col gap-3">
-                    <button
-                      onClick={handleStart}
-                      className="btn-game w-full bg-[#a3e635] text-[#064e3b] disabled:bg-[#f1f5f9] disabled:text-[#94a3b8] disabled:border-[#cbd5e1] disabled:transform-none disabled:active:translate-y-0 rounded-2xl px-8 py-5 text-xl tracking-wide border-2 border-[#064e3b] border-b-[6px] hover:bg-[#bef264]"
-                    >
-                      Start Game
-                    </button>
-                    {showNoUserMsg && (
-                      <div className="bg-[#ef4444] text-white text-xs font-bold text-center p-2 rounded-xl border-2 border-[#b91c1c] shadow-[0_3px_0_#b91c1c] mx-auto w-max px-4">
-                        no user online
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <div className="w-full bg-[#f1f5f9] rounded-2xl py-5 text-center text-[#94a3b8] font-bold border-2 border-[#e2e8f0] animate-pulse">
-                    Waiting for host to start...
-                  </div>
-                )}
-
-                {/* ── Status hint below button ──────────────────────────────── */}
-                {players.length === 1 && countdown === null && (
-                  <div className="bg-[#f0fdf4] text-[#15803d] text-xs font-bold text-center p-2 rounded-xl mx-auto w-max px-4 animate-pulse">
-                    ⏳ Waiting for 1 more player to auto-start…
-                  </div>
-                )}
+                  ) : (
+                    <div className="w-full bg-[#f1f5f9] rounded-2xl py-5 text-center text-[#94a3b8] font-bold border-2 border-[#e2e8f0] animate-pulse">
+                      Waiting for host to start...
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-
-          </div>
+          )}
 
           {/* Right Column: Players Grid */}
-          <div className="flex-[1.2] bg-white border-2 border-[#e2e8f0] rounded-[32px] p-8 shadow-[0_8px_20px_rgba(0,0,0,0.05)] flex flex-col h-[650px]">
+          <div className={`bg-white border-2 border-[#e2e8f0] rounded-[32px] p-8 shadow-[0_8px_20px_rgba(0,0,0,0.05)] flex flex-col h-[650px] ${isQuickPlay ? 'w-full max-w-2xl mx-auto' : 'flex-[1.2]'}`}>
             <div className="flex justify-between items-center mb-6">
                <h3 className="text-[#0f172a] font-black text-xl tracking-wide">Players Inside</h3>
                <div className="bg-[#a3e635] text-[#064e3b] font-black px-4 py-1.5 rounded-full border-2 border-[#064e3b] shadow-[0_2px_0_#064e3b]">
                   {players.length} / {settings?.maxPlayers || 8}
                </div>
             </div>
+
+            {players.length === 1 && countdown === null && (
+              <div className="bg-[#f0fdf4] text-[#15803d] text-xs font-bold text-center p-3 rounded-xl mb-4 w-full px-4 animate-pulse border border-[#bbf7d0]">
+                ⏳ Waiting for 1 more player to auto-start…
+              </div>
+            )}
+
+            {/* ── Auto-start countdown (shown to ALL players) ───────────── */}
+            {countdown !== null && (
+              <div className="flex flex-col items-center gap-2 py-3 bg-[#f0fdf4] rounded-2xl border-[3px] border-[#22c55e] shadow-[0_4px_0_#22c55e] mb-4">
+                <div className="relative w-16 h-16">
+                  <svg className="w-16 h-16 -rotate-90" viewBox="0 0 64 64">
+                    <circle cx="32" cy="32" r="28" fill="none" stroke="#e2e8f0" strokeWidth="5" />
+                    <circle
+                      cx="32" cy="32" r="28" fill="none"
+                      stroke="#22c55e" strokeWidth="5"
+                      strokeDasharray={`${2 * Math.PI * 28}`}
+                      strokeDashoffset={`${2 * Math.PI * 28 * (1 - countdown / 10)}`}
+                      strokeLinecap="round"
+                      style={{ transition: 'stroke-dashoffset 0.9s linear' }}
+                    />
+                  </svg>
+                  <span className="absolute inset-0 flex items-center justify-center text-2xl font-black text-[#0f172a]">
+                    {countdown}
+                  </span>
+                </div>
+                <span className="text-[#15803d] font-black text-sm uppercase tracking-widest">Game starting soon!</span>
+              </div>
+            )}
             
             <div className="flex-1 overflow-y-auto custom-scrollbar pr-2">
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
