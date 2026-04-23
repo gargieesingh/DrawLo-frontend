@@ -149,7 +149,7 @@ export default function Game() {
 
       {/* Main Layout */}
       {/* Large screens: 3-column row | Small/medium: canvas top, sidebars bottom */}
-      <div className="flex-1 w-full max-w-[1600px] mx-auto p-2 lg:p-4 grid grid-cols-2 lg:grid-cols-[280px_minmax(0,1fr)_320px] grid-rows-[3fr_2fr] lg:grid-rows-1 gap-1.5 sm:gap-2 lg:gap-4 min-h-0">
+      <div className="flex-1 w-full max-w-[1600px] mx-auto p-2 lg:p-4 grid grid-cols-[30%_70%] lg:grid-cols-[280px_minmax(0,1fr)_320px] grid-rows-[3fr_2fr] lg:grid-rows-1 gap-1.5 sm:gap-2 lg:gap-4 min-h-0">
 
         {/* Canvas - Top on mobile, Center on desktop */}
         <main className="col-span-2 row-start-1 row-end-2 lg:col-span-1 lg:col-start-2 lg:col-end-3 lg:row-start-1 lg:row-end-2 flex flex-col items-center justify-center min-h-0 overflow-hidden min-w-0 lg:p-2">
