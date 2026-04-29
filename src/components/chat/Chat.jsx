@@ -8,11 +8,12 @@ const AVATAR_COLORS = ['#e94560','#4ecca3','#f7b731','#a29bfe','#fd79a8','#00cec
 export default function Chat() {
   const { state } = useGame();
   const { messages, playerId } = state;
-  const bottomRef = useRef(null);
+  const scrollContainerRef = useRef(null);
 
   // Auto-scroll to bottom on new messages
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const el = scrollContainerRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
   }, [messages]);
 
   function renderMessage(msg, index) {
@@ -138,15 +139,16 @@ export default function Chat() {
   }
 
   return (
-    <div className="flex flex-col min-h-full pb-2">
-      {messages.length === 0 && (
-        <div className="text-center text-[#94a3b8] text-xs mt-12 font-black uppercase tracking-[0.2em] flex items-center justify-center flex-col gap-3">
-          <div className="text-4xl opacity-50 border-[#94a3b8]">💬</div>
-          <span>Chat feeds here</span>
-        </div>
-      )}
-      {messages.map((msg, i) => renderMessage(msg, i))}
-      <div ref={bottomRef} />
+    <div ref={scrollContainerRef} className="flex flex-col h-full overflow-y-auto pb-2">
+      <div className="mt-auto flex flex-col">
+        {messages.length === 0 && (
+          <div className="text-center text-[#94a3b8] text-xs mt-12 font-black uppercase tracking-[0.2em] flex items-center justify-center flex-col gap-3">
+            <div className="text-4xl opacity-50 border-[#94a3b8]">💬</div>
+            <span>Chat feeds here</span>
+          </div>
+        )}
+        {messages.map((msg, i) => renderMessage(msg, i))}
+      </div>
     </div>
   );
 }

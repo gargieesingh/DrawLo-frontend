@@ -175,7 +175,7 @@ export default function Game() {
                  💬 <span className="lg:hidden">Chat</span><span className="hidden lg:inline">Chat Area</span>
               </h3>
            </div>
-           <div className="flex-1 overflow-y-auto custom-scrollbar relative bg-[#f0fdf4]/50 p-0.5 sm:p-1 lg:p-3">
+           <div className="flex-1 overflow-hidden min-h-0 relative bg-[#f0fdf4]/50 p-0.5 sm:p-1 lg:p-3">
              <Chat />
            </div>
            <div className="bg-[#f8fafc] border-t-2 border-[#e2e8f0] shrink-0 p-1.5 sm:p-2 lg:p-3">
