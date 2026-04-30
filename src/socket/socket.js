@@ -14,4 +14,11 @@ const socket = io(getBackendUrl(), {
   autoConnect: false,
 });
 
+socket.on('connect', () => console.log('✅ Socket connected', socket.id));
+socket.on('disconnect', (reason) => console.error('❌ Socket disconnected:', reason));
+socket.on('connect_error', (err) => console.error('❌ Connect error:', err.message));
+socket.io.on('reconnect', (attempt) => console.log('🔄 Reconnected after', attempt, 'attempts'));
+socket.io.on('reconnect_failed', () => console.error('💀 Reconnect failed permanently'));
+
+
 export default socket;

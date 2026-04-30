@@ -129,6 +129,15 @@ export function useGameEvents() {
       dispatch({ type: 'COUNTDOWN_CANCELLED' });
     }
 
+    // ── disconnect / reconnect ────────────────────────────────────────────────
+    function onDisconnect(reason) {
+      dispatch({ type: 'SET_ERROR', message: 'Connection lost. Reconnecting...' });
+    }
+
+    function onConnect() {
+      dispatch({ type: 'CLEAR_ERROR' });
+    }
+
     socket.on('room_created', onRoomCreated);
     socket.on('join_success', onJoinSuccess);
     socket.on('join_error', onJoinError);
@@ -148,6 +157,8 @@ export function useGameEvents() {
     socket.on('you_guessed_correctly', onYouGuessedCorrectly);
     socket.on('countdown_tick', onCountdownTick);
     socket.on('countdown_cancelled', onCountdownCancelled);
+    socket.on('disconnect', onDisconnect);
+    socket.on('connect', onConnect);
 
     return () => {
       socket.off('room_created', onRoomCreated);
@@ -169,6 +180,8 @@ export function useGameEvents() {
       socket.off('you_guessed_correctly', onYouGuessedCorrectly);
       socket.off('countdown_tick', onCountdownTick);
       socket.off('countdown_cancelled', onCountdownCancelled);
+      socket.off('disconnect', onDisconnect);
+      socket.off('connect', onConnect);
     };
   }, [dispatch, addMessage, router]);
-}
+}
