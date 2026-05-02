@@ -54,7 +54,7 @@ export default function Home() {
       return;
     }
     dispatch({ type: 'SET_QUICK_PLAY', value: false });
-    connectAndEmit('create_room', { name: name.trim(), settings: { maxPlayers: 8, rounds: 3, drawTime: 80 } });
+    connectAndEmit('create_room', { name: name.trim(), settings: { maxPlayers: 8, rounds: 3, drawTime: 80, isPrivate: true } });
   }
 
   function handleJoin(e) {
