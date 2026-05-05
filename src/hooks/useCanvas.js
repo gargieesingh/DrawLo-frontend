@@ -82,6 +82,11 @@ export function useCanvas(isDrawer) {
   const colorRef = useRef('#000000');
   const sizeRef = useRef(5);
 
+  // Undo stack: array of stroke segments. Each segment is an array of draw events.
+  // A new segment starts on mousedown/touchstart and closes on mouseup/touchend.
+  const strokeSegmentsRef = useRef([]);  // [ [evt, evt, ...], [evt, ...], ... ]
+  const currentSegmentRef = useRef([]);  // strokes for the currently active drag
+
   // Exposed setters so Toolbar can update tool/color/size
   const setTool = useCallback((t) => { toolRef.current = t; }, []);
   const setColor = useCallback((c) => { colorRef.current = c; }, []);
@@ -107,17 +112,29 @@ export function useCanvas(isDrawer) {
 
   // ── Replay draw history (for late joiners) ──────────────────────────────────
 
+  // Replays a flat list of draw events, rebuilding the undo stack as segments.
+  // Fill events are treated as single-event segments.
   const replayHistory = useCallback((history) => {
     const ctx = getCtx();
     if (!ctx || !history?.length) return;
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    // Rebuild undo stack from history: each fill is its own segment;
+    // consecutive non-fill events are grouped into one segment.
+    const segments = [];
+    let seg = [];
     history.forEach(evt => {
       if (evt.tool === 'fill') {
+        if (seg.length) { segments.push(seg); seg = []; }
+        segments.push([evt]);
         floodFill(ctx, evt.x, evt.y, evt.color, CANVAS_WIDTH, CANVAS_HEIGHT);
       } else {
+        seg.push(evt);
         applyStroke(ctx, evt);
       }
     });
+    if (seg.length) segments.push(seg);
+    strokeSegmentsRef.current = segments;
+    currentSegmentRef.current = [];
   }, []);
 
   // ── Remote draw event ──────────────────────────────────────────────────────
@@ -153,6 +170,8 @@ export function useCanvas(isDrawer) {
     // Draw locally
     const ctx = getCtx();
     if (ctx) applyStroke(ctx, data);
+    // Track for undo
+    currentSegmentRef.current.push(data);
     // Emit to server
     socket.emit('draw', data);
   }
@@ -166,6 +185,8 @@ export function useCanvas(isDrawer) {
     // Fill locally
     const ctx = getCtx();
     if (ctx) floodFill(ctx, x, y, data.color, CANVAS_WIDTH, CANVAS_HEIGHT);
+    // Fill is its own undo segment
+    strokeSegmentsRef.current.push([data]);
     // Emit to server so other clients can replay it
     socket.emit('draw', data);
   }
@@ -180,11 +201,11 @@ export function useCanvas(isDrawer) {
       if (e.button !== 0) return;
       const pos = getCanvasPos(e.clientX, e.clientY);
       if (toolRef.current === 'fill') {
-        // Fill tool: single click, no drag
         emitFill(pos.x, pos.y);
         return;
       }
       isDrawingRef.current = true;
+      currentSegmentRef.current = [];  // start new segment
       lastPosRef.current = pos;
     }
 
@@ -196,10 +217,18 @@ export function useCanvas(isDrawer) {
     }
 
     function onMouseUp() {
+      if (isDrawingRef.current && currentSegmentRef.current.length > 0) {
+        strokeSegmentsRef.current.push([...currentSegmentRef.current]);
+        currentSegmentRef.current = [];
+      }
       isDrawingRef.current = false;
     }
 
     function onMouseLeave() {
+      if (isDrawingRef.current && currentSegmentRef.current.length > 0) {
+        strokeSegmentsRef.current.push([...currentSegmentRef.current]);
+        currentSegmentRef.current = [];
+      }
       isDrawingRef.current = false;
     }
 
@@ -214,6 +243,7 @@ export function useCanvas(isDrawer) {
         return;
       }
       isDrawingRef.current = true;
+      currentSegmentRef.current = [];  // start new segment
       lastPosRef.current = pos;
     }
 
@@ -227,6 +257,10 @@ export function useCanvas(isDrawer) {
     }
 
     function onTouchEnd() {
+      if (isDrawingRef.current && currentSegmentRef.current.length > 0) {
+        strokeSegmentsRef.current.push([...currentSegmentRef.current]);
+        currentSegmentRef.current = [];
+      }
       isDrawingRef.current = false;
     }
 
@@ -251,7 +285,29 @@ export function useCanvas(isDrawer) {
     };
   }, [isDrawer]);
 
-  // ── Socket listeners (draw + clear_canvas + draw_history) ─────────────────
+  // ── Undo ───────────────────────────────────────────────────────────────────
+
+  const undo = useCallback(() => {
+    if (strokeSegmentsRef.current.length === 0) return;
+    strokeSegmentsRef.current.pop();
+    // Redraw everything from remaining segments
+    const ctx = getCtx();
+    if (!ctx) return;
+    ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    strokeSegmentsRef.current.forEach(segment => {
+      segment.forEach(evt => {
+        if (evt.tool === 'fill') {
+          floodFill(ctx, evt.x, evt.y, evt.color, CANVAS_WIDTH, CANVAS_HEIGHT);
+        } else {
+          applyStroke(ctx, evt);
+        }
+      });
+    });
+    // Notify server so other clients update too
+    socket.emit('undo');
+  }, []);
+
+  // ── Socket listeners (draw + clear_canvas) ─────────────────────────────────
 
   useEffect(() => {
     function onDraw(data) {
@@ -268,16 +324,36 @@ export function useCanvas(isDrawer) {
     function onClearCanvas() {
       const ctx = getCtx();
       if (ctx) ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      strokeSegmentsRef.current = [];
+      currentSegmentRef.current = [];
+    }
+
+    // Undo from another client (the drawer)
+    function onUndo(history) {
+      if (!isDrawer) {
+        const ctx = getCtx();
+        if (!ctx) return;
+        ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        (history || []).forEach(evt => {
+          if (evt.tool === 'fill') {
+            floodFill(ctx, evt.x, evt.y, evt.color, CANVAS_WIDTH, CANVAS_HEIGHT);
+          } else {
+            applyStroke(ctx, evt);
+          }
+        });
+      }
     }
 
     socket.on('draw', onDraw);
     socket.on('clear_canvas', onClearCanvas);
+    socket.on('undo', onUndo);
 
     return () => {
       socket.off('draw', onDraw);
       socket.off('clear_canvas', onClearCanvas);
+      socket.off('undo', onUndo);
     };
   }, [isDrawer, drawRemote]);
 
-  return { canvasRef, setTool, setColor, setSize, replayHistory };
+  return { canvasRef, setTool, setColor, setSize, replayHistory, undo };
 }

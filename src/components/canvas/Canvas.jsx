@@ -15,7 +15,13 @@ export default function Canvas() {
   const { gameStatus, isMyTurn, currentTool, currentColor, currentSize, drawHistory } = state;
   const isDrawer = isMyTurn && gameStatus === 'drawing';
 
-  const { canvasRef, setTool, setColor, setSize, replayHistory } = useCanvas(isDrawer);
+  const { canvasRef, setTool, setColor, setSize, replayHistory, undo } = useCanvas(isDrawer);
+
+  // Expose undo globally so Toolbar can call it without prop drilling
+  useEffect(() => {
+    window.__drawlo_undo__ = undo;
+    return () => { window.__drawlo_undo__ = null; };
+  }, [undo]);
 
   useEffect(() => {
     setTool(currentTool);

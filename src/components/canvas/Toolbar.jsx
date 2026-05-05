@@ -63,6 +63,16 @@ const TrashIcon = () => (
   </svg>
 );
 
+// Undo — circular counterclockwise arrow (flaticon #4250945 style)
+const UndoIcon = () => (
+  <svg viewBox="0 0 24 24" className="w-[18px] h-[18px] lg:w-6 lg:h-6 drop-shadow-sm" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+    {/* Counterclockwise arc from ~top-right going left and down */}
+    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+    {/* Arrowhead on the left end of the arc */}
+    <polyline points="3 3 3 8 8 8" />
+  </svg>
+);
+
 const COLORS = [
   '#000000','#ffffff','#ef4444','#f97316','#eab308','#22c55e',
   '#06b6d4','#3b82f6','#8b5cf6','#ec4899','#92400e','#6b7280',
@@ -206,6 +216,14 @@ export default function Toolbar() {
             <span className="flex items-center justify-center w-4 h-4 rounded-full border-2 border-[#1e293b] shadow-sm" style={{ backgroundColor: currentColor }} />
           </button>
 
+          {/* Undo — mobile: before Clear */}
+          <button
+            onClick={() => window.__drawlo_undo__?.()}
+            title="Undo"
+            className="btn-game w-8 h-8 rounded-lg flex items-center justify-center border-b-[2px]
+              bg-[#f8fafc] text-[#475569] border-[#e2e8f0] hover:bg-[#e2e8f0]"
+          ><UndoIcon /></button>
+
           {/* Clear */}
           <button
             onClick={() => { socket.emit('clear_canvas'); setShowColorPicker(false); }}
@@ -253,6 +271,14 @@ export default function Toolbar() {
                 ${currentTool === 'fill' ? 'bg-[#a3e635] text-[#064e3b] border-b-[4px] border-[#65a30d]' : 'bg-[#f8fafc] text-[#475569] border-b-[4px] border-[#e2e8f0] hover:bg-[#e2e8f0]'}`}
             ><FillIcon /></button>
           </div>
+
+          {/* Undo — desktop: after Fill */}
+          <button
+            onClick={() => window.__drawlo_undo__?.()}
+            title="Undo"
+            className="btn-game px-3 py-2.5 rounded-2xl flex items-center justify-center
+              bg-[#f8fafc] text-[#475569] border-b-[4px] border-[#e2e8f0] hover:bg-[#e2e8f0]"
+          ><UndoIcon /></button>
         </div>
 
         <div className="h-1.5 w-10 bg-[#e2e8f0] rounded-full shrink-0"></div>
