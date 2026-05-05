@@ -5,7 +5,10 @@ import socket from '../socket/socket';
 import { useGame } from '../context/GameContext';
 import HowToPlay from '../components/HowToPlay';
 
-const AVATARS = Array.from({ length: 29 }, (_, i) => `/avatars/avatar_${i}.png`);
+const AVATARS = [
+  ...Array.from({ length: 17 }, (_, i) => `/avatars/avatar_${i}.svg`),   // 0–16 → SVG
+  ...Array.from({ length: 12 }, (_, i) => `/avatars/avatar_${i + 17}.png`), // 17–28 → PNG
+];
 
 export default function Home() {
   const [name, setName] = useState('');
