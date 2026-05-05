@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useLayoutEffect } from 'react';
 import { useGame } from '../../context/GameContext';
 import { useCanvas } from '../../hooks/useCanvas';
 import { useRouter } from 'next/navigation';
@@ -12,10 +12,10 @@ export default function Canvas() {
   const router = useRouter();
   const { state } = useGame();
   
-  const { gameStatus, isMyTurn, currentTool, currentColor, currentSize } = state;
+  const { gameStatus, isMyTurn, currentTool, currentColor, currentSize, drawHistory } = state;
   const isDrawer = isMyTurn && gameStatus === 'drawing';
 
-  const { canvasRef, setTool, setColor, setSize } = useCanvas(isDrawer);
+  const { canvasRef, setTool, setColor, setSize, replayHistory } = useCanvas(isDrawer);
 
   useEffect(() => {
     setTool(currentTool);
@@ -29,17 +29,28 @@ export default function Canvas() {
     setSize(currentSize);
   }, [currentSize, setSize]);
 
-  useEffect(() => {
+  // Initialise canvas dimensions and fill white synchronously so it is ready
+  // before any socket-driven draw_history replay runs.
+  useLayoutEffect(() => {
     const canvas = canvasRef.current;
     if (canvas) {
       canvas.width = 800;
       canvas.height = 600;
-      // White base
       const ctx = canvas.getContext('2d');
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
   }, []);
+
+  // Replay draw history once the canvas is initialised.
+  // drawHistory is stored in GameContext by useGameEvents (root level), so
+  // it is already populated by the time this component mounts.
+  useLayoutEffect(() => {
+    if (drawHistory && drawHistory.length > 0) {
+      replayHistory(drawHistory);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);  // run once on mount — history is captured before navigation completes
 
   let cursorClass = 'canvas-viewer';
   if (isDrawer) {

@@ -57,6 +57,9 @@ const initialState = {
 
   // How user joined: true = Quick Play, false = private room
   isQuickPlay: false,
+
+  // Stored draw history for late joiners — replayed when Canvas mounts
+  drawHistory: [],
 };
 
 function reducer(state, action) {
@@ -96,6 +99,9 @@ function reducer(state, action) {
       };
     }
 
+    case 'SET_DRAW_HISTORY':
+      return { ...state, drawHistory: action.history };
+
     case 'TURN_START':
       return {
         ...state,
@@ -110,6 +116,7 @@ function reducer(state, action) {
         guessedWord: null,
         gameStatus: 'picking',
         countdown: null,
+        drawHistory: [],  // clear for new turn
       };
 
     case 'YOUR_TURN_TO_DRAW':
@@ -214,6 +221,7 @@ function reducer(state, action) {
         playerAvatar: state.playerAvatar,
         playerId: state.playerId,
       };
+
 
     default:
       return state;

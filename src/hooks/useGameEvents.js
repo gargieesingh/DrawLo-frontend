@@ -129,6 +129,13 @@ export function useGameEvents() {
       dispatch({ type: 'COUNTDOWN_CANCELLED' });
     }
 
+    // ── draw_history ───────────────────────────────────────────────────────
+    // Captured here (root layout level) so it is NEVER missed during page
+    // navigation. Canvas.jsx reads state.drawHistory and replays on mount.
+    function onDrawHistory(history) {
+      dispatch({ type: 'SET_DRAW_HISTORY', history });
+    }
+
     // ── disconnect / reconnect ────────────────────────────────────────────────
     function onDisconnect(reason) {
       dispatch({ type: 'SET_ERROR', message: 'Connection lost. Reconnecting...' });
@@ -157,6 +164,7 @@ export function useGameEvents() {
     socket.on('you_guessed_correctly', onYouGuessedCorrectly);
     socket.on('countdown_tick', onCountdownTick);
     socket.on('countdown_cancelled', onCountdownCancelled);
+    socket.on('draw_history', onDrawHistory);
     socket.on('disconnect', onDisconnect);
     socket.on('connect', onConnect);
 
@@ -180,8 +188,9 @@ export function useGameEvents() {
       socket.off('you_guessed_correctly', onYouGuessedCorrectly);
       socket.off('countdown_tick', onCountdownTick);
       socket.off('countdown_cancelled', onCountdownCancelled);
+      socket.off('draw_history', onDrawHistory);
       socket.off('disconnect', onDisconnect);
       socket.off('connect', onConnect);
     };
   }, [dispatch, addMessage, router]);
-}
+}

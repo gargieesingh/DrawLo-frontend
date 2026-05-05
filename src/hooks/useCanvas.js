@@ -270,20 +270,14 @@ export function useCanvas(isDrawer) {
       if (ctx) ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     }
 
-    function onDrawHistory(history) {
-      replayHistory(history);
-    }
-
     socket.on('draw', onDraw);
     socket.on('clear_canvas', onClearCanvas);
-    socket.on('draw_history', onDrawHistory);
 
     return () => {
       socket.off('draw', onDraw);
       socket.off('clear_canvas', onClearCanvas);
-      socket.off('draw_history', onDrawHistory);
     };
-  }, [isDrawer, drawRemote, replayHistory]);
+  }, [isDrawer, drawRemote]);
 
   return { canvasRef, setTool, setColor, setSize, replayHistory };
 }
