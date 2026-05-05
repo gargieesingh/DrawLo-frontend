@@ -72,7 +72,7 @@ const CANVAS_HEIGHT = 600;
  * Manages all canvas drawing logic — both local drawing and receiving remote strokes.
  *
  * @param {boolean} isDrawer - Whether the local player is the current drawer
- * @returns {{ canvasRef, drawRemote, replayHistory }}
+ * @returns {{ canvasRef, drawRemote, replayHistory, undo }}
  */
 export function useCanvas(isDrawer) {
   const canvasRef = useRef(null);
@@ -290,24 +290,28 @@ export function useCanvas(isDrawer) {
   const undo = useCallback(() => {
     if (strokeSegmentsRef.current.length === 0) return;
     strokeSegmentsRef.current.pop();
-    // Redraw everything from remaining segments
+
+    // Flatten remaining segments into a single ordered history array
+    const remainingHistory = strokeSegmentsRef.current.flat();
+
+    // Redraw locally from remaining history
     const ctx = getCtx();
     if (!ctx) return;
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    strokeSegmentsRef.current.forEach(segment => {
-      segment.forEach(evt => {
-        if (evt.tool === 'fill') {
-          floodFill(ctx, evt.x, evt.y, evt.color, CANVAS_WIDTH, CANVAS_HEIGHT);
-        } else {
-          applyStroke(ctx, evt);
-        }
-      });
+    remainingHistory.forEach(evt => {
+      if (evt.tool === 'fill') {
+        floodFill(ctx, evt.x, evt.y, evt.color, CANVAS_WIDTH, CANVAS_HEIGHT);
+      } else {
+        applyStroke(ctx, evt);
+      }
     });
-    // Notify server so other clients update too
-    socket.emit('undo');
+
+    // Send remaining history to server — it will replace drawHistory and
+    // broadcast to all other clients so their canvases update too.
+    socket.emit('undo', remainingHistory);
   }, []);
 
-  // ── Socket listeners (draw + clear_canvas) ─────────────────────────────────
+  // ── Socket listeners (draw + clear_canvas + undo) ──────────────────────────
 
   useEffect(() => {
     function onDraw(data) {
@@ -328,7 +332,7 @@ export function useCanvas(isDrawer) {
       currentSegmentRef.current = [];
     }
 
-    // Undo from another client (the drawer)
+    // Undo broadcast from server — redraw the remaining history on viewer canvases
     function onUndo(history) {
       if (!isDrawer) {
         const ctx = getCtx();
