@@ -92,46 +92,49 @@ export default function Home() {
          </div>
       </div>
 
-      <div className="bg-white border-2 border-[#e2e8f0] p-8 rounded-[32px] shadow-[0_12px_40px_rgba(0,0,0,0.05)] w-full max-w-md flex flex-col items-center relative z-10">
+      <div className="bg-white border-2 border-[#e2e8f0] p-8 rounded-md shadow-[0_12px_40px_rgba(0,0,0,0.05)] w-full max-w-md flex flex-col items-center relative z-10">
         
         <form className="w-full flex flex-col">
           {/* Name input — shared by all modes */}
-          <label className="block text-[#475569] text-sm font-black uppercase tracking-widest mb-3 ml-2">Your Name</label>
+          <label className="block text-[#475569] text-sm font-black uppercase tracking-widest mb-1 ml-2">Your Name</label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="e.g. Picasso"
+            placeholder="e.g. Aryan"
             maxLength={15}
-            className="w-full bg-[#f8fafc] border-2 border-[#e2e8f0] rounded-2xl px-5 py-4 text-[#0f172a] font-bold text-lg placeholder-[#94a3b8] focus:outline-none focus:border-[#a3e635] focus:ring-4 focus:ring-[#a3e635]/30 transition-all duration-200 mb-6 shadow-inner"
+            className="w-full bg-[#f8fafc] border-2 border-[#e2e8f0] rounded-lg px-3 py-2 text-[#0f172a] font-bold text-md placeholder-[#94a3b8] focus:outline-none focus:border-[#a3e635] focus:ring-4 focus:ring-[#a3e635]/30 transition-all duration-200 mb-6 shadow-inner"
           />
 
           {/* Avatar Selector Dropdown */}
-          <label className="block text-[#475569] text-sm font-black uppercase tracking-widest mb-3 ml-2">Choose Avatar</label>
+          <label className="block text-[#475569] text-sm font-black uppercase tracking-widest mb-1 ml-2">Choose Avatar</label>
           <div className="relative mb-8">
             <button
               type="button"
               onClick={() => setIsAvatarDropdownOpen(!isAvatarDropdownOpen)}
-              className="w-full bg-[#f8fafc] border-2 border-[#e2e8f0] rounded-2xl px-5 py-3 text-[#0f172a] font-bold text-lg focus:outline-none focus:border-[#a3e635] focus:ring-4 focus:ring-[#a3e635]/30 transition-all duration-200 shadow-inner flex items-center justify-between"
+              className="w-full bg-[#f8fafc] border-2 border-[#e2e8f0] rounded-lg px-4 py-2 focus:outline-none focus:border-[#a3e635] focus:ring-4 focus:ring-[#a3e635]/30 transition-all duration-200 shadow-inner flex items-center justify-between gap-3"
             >
-              <div className="flex items-center gap-3">
-                <div className="w-14 h-14 rounded-full bg-[#a3e635] flex items-center justify-center overflow-hidden border-2 border-[#064e3b] shrink-0">
-                   {selectedAvatar.startsWith('/') ? (
-                     <img src={selectedAvatar} className="w-full h-full object-cover scale-[1.3]" alt="Selected avatar" />
-                   ) : (
-                     <span className="text-3xl">{selectedAvatar}</span>
-                   )}
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-10 h-10 rounded-full bg-[#a3e635] flex items-center justify-center overflow-hidden border-2 border-[#c8e88a] shrink-0">
+                  {selectedAvatar.startsWith('/') ? (
+                    <img src={selectedAvatar} className="w-full h-full object-cover scale-[1.3] pointer-events-none" alt="Selected avatar" />
+                  ) : (
+                    <span className="text-2xl">{selectedAvatar}</span>
+                  )}
                 </div>
-                <span className='text-[15px] font-bold text-[#475569]'>Select an Avatar</span>
+                <span className="text-sm font-bold text-[#475569] truncate">Select your avatar</span>
               </div>
-              <span className={`transform transition-transform ${isAvatarDropdownOpen ? 'rotate-180' : ''}`}>
-                ▼
+              <span className={`transform transition-transform shrink-0 ${isAvatarDropdownOpen ? 'rotate-180' : ''}`}>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" className="w-3 h-3 fill-current text-[#94a3b8]">
+                  <path d="M140.3 376.8c12.6 10.2 31.1 9.5 42.8-2.2l128-128c9.2-9.2 11.9-22.9 6.9-34.9S301.4 192 288.5 192l-256 0c-12.9 0-24.6 7.8-29.6 19.8S.7 237.5 9.9 246.6l128 128 2.4 2.2z"/>
+                </svg>
               </span>
             </button>
+
             
             {isAvatarDropdownOpen && (
               <div 
-                className="absolute z-50 w-full mt-2 bg-white border-2 border-[#e2e8f0] rounded-2xl p-4 shadow-[0_12px_24px_rgba(0,0,0,0.15)]"
+                className="absolute z-50 w-full mt-2 bg-white border-2 border-[#e2e8f0] rounded-lg p-4 shadow-[0_12px_24px_rgba(0,0,0,0.25)]"
               >
                 <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
                   {AVATARS.map((avatar) => (
@@ -163,13 +166,13 @@ export default function Home() {
           <button
             onClick={handleQuickPlay}
             disabled={isConnecting}
-            className={`btn-game w-full rounded-2xl py-5 px-6 border-b-[6px] mb-4 shadow-[0_4px_15px_rgba(163,230,53,0.3)] transition-all ${
+            className={`btn-game w-full rounded-lg py-2 px-8 border-b-[3px] mb-4 mx-auto shadow-[0_4px_15px_rgba(163,230,53,0.3)] transition-all ${
               isConnecting 
                 ? 'bg-[#e2e8f0] text-[#94a3b8] border-[#cbd5e1] cursor-not-allowed transform-none' 
                 : 'bg-[#a3e635] text-[#064e3b] border-[#65a30d] hover:bg-[#bef264] hover:border-[#4d7c0f]'
             }`}
           >
-            <span className="block text-xl font-black">Quick Play</span>
+            <span className="block text-xl font-black">Play</span>
             {/* <span className={`block text-xs font-bold mt-0.5 ${isConnecting ? 'text-[#94a3b8]' : 'text-[#064e3b] opacity-80'}`}>
               {isConnecting ? 'Connecting...' : 'Auto-match with other players'}
             </span> */}
@@ -188,13 +191,13 @@ export default function Home() {
                 type="button"
                 onClick={handleCreate}
                 disabled={isConnecting}
-                className={`btn-game w-full rounded-2xl py-4 px-6 border-b-[6px] text-sm font-black uppercase tracking-wider transition-all duration-200 ${
+                className={`btn-game w-full rounded-lg py-3 px-6 border-b-[3px] text-sm font-black uppercase tracking-wider transition-all duration-200 ${
                   isConnecting
                     ? 'bg-[#e2e8f0] text-[#94a3b8] border-[#cbd5e1] cursor-not-allowed transform-none' 
                     : 'bg-[#f1f5f9] text-[#475569] border-[#cbd5e1] hover:bg-[#e2e8f0]'
                 }`}
               >
-                Create Private Room
+                Create Your Private Room
               </button>
               
               <div className="flex items-center gap-4">
@@ -216,7 +219,7 @@ export default function Home() {
                   type="button"
                   onClick={handleJoin}
                   disabled={!code.trim() || isConnecting}
-                  className={`col-span-2 rounded-xl py-3 px-2 border-b-[4px] text-sm font-black transition-all ${
+                  className={`col-span-2 rounded-xl py-3 px-2 border-b-[3px] text-sm font-black transition-all ${
                      !code.trim() || isConnecting
                        ? 'bg-[#e2e8f0] text-[#94a3b8] border-[#cbd5e1] cursor-not-allowed transform-none'
                        : 'bg-[#86efac] text-[#064e3b] border-[#22c55e] hover:bg-[#bbf7d0] hover:border-[#16a34a]'
