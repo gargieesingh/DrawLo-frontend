@@ -71,7 +71,7 @@ export default function Canvas() {
         {/* Canvas Wrapper */}
         <div 
           ref={containerRef}
-          className={`relative flex-1 bg-white rounded-lg lg:rounded-3xl overflow-hidden transition-all duration-300 min-w-0 w-full h-full
+          className={`relative flex-1 bg-white rounded-lg overflow-hidden transition-all duration-300 min-w-0 w-full h-full
             ${isDrawer ? 'border-2 lg:border-4 border-[#e94560] shadow-[0_2px_0_#9f1239] lg:shadow-[0_4px_0_#9f1239]' : 'border-2 lg:border-4 border-[#334155] shadow-[0_2px_0_#0f172a] lg:shadow-[0_4px_0_#0f172a]'}`}
           style={{ maxHeight: '100%', maxWidth: '100%', margin: '0 auto' }} 
         >
