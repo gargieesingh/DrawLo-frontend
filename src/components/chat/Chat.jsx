@@ -34,9 +34,9 @@ export default function Chat() {
     if (msg.type === 'correct') {
       return (
         <div key={key} className="flex justify-center my-1.5 sm:my-2 w-full animate-bounce-slow">
-          <div className="bg-[#f0fdf4] border-[1.5px] sm:border-[2px] border-[#22c55e] text-[#15803d] font-black text-[10px] sm:text-xs px-2 sm:px-3 py-1 sm:py-1.5 rounded-xl sm:rounded-2xl rounded-tr-sm shadow-[0_2px_0_#22c55e] sm:shadow-[0_3px_0_#22c55e] flex items-center gap-1 sm:gap-2">
-            <span className="text-sm sm:text-lg leading-none">✅</span>
-            <span>{msg.name} guessed it!</span>
+          <div className="bg-[#f0fdf4] border-[1.5px] sm:border-[2px] border-[#22c55e] text-[#15803d] font-black text-[10px] sm:text-xs px-2 sm:px-3 py-0 sm:py-1.5 rounded-md shadow-[0_2px_0_#22c55e] sm:shadow-[0_2px_0_#22c55e] flex items-center sm:gap-1">
+            <span className="text-sm sm:text-lg leading-none"></span>
+            <span>{msg.name} guessed the word</span>
           </div>
         </div>
       );
