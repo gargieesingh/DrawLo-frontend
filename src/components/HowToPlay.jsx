@@ -73,7 +73,7 @@ export default function HowToPlay() {
 
         {/* Active Card */}
         <div
-          className="shrink-0 w-60 sm:w-72 bg-white border-2 border-[#e2e8f0] rounded-3xl p-3 sm:p-4 shadow-[0_4px_0_#e2e8f0] flex flex-col items-center gap-2 sm:gap-3 hover:-translate-y-1 hover:border-[#a3e635] hover:shadow-[0_6px_0_rgba(163,230,53,0.5)] transition-all duration-200"
+          className="shrink-0 w-70 sm:w-72 bg-white border-2 border-[#e2e8f0] rounded-3xl p-3 sm:p-4 shadow-[0_4px_0_#e2e8f0] flex flex-col items-center gap-2 sm:gap-3 hover:-translate-y-1 hover:border-[#a3e635] hover:shadow-[0_6px_0_rgba(163,230,53,0.5)] transition-all duration-200"
         >
           {/* Illustration */}
           <div className="w-full rounded-2xl bg-[#f8fafc] border border-[#e2e8f0] overflow-hidden flex items-center justify-center"
