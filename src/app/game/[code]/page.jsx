@@ -68,8 +68,8 @@ export default function Game() {
             </h1>
             
             <div className="bg-white border-2 border-[#e2e8f0] rounded-[32px] p-8 w-full max-w-sm shadow-[0_16px_40px_rgba(0,0,0,0.1)] my-8 relative">
-              <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-[#f7b731] text-[#713f12] font-black uppercase tracking-widest px-6 py-2 rounded-full border-4 border-[#f7b731] shadow-[0_4px_0_#713f12] whitespace-nowrap">
-                👑 Winner: {gameResult.players[0]?.name}
+              <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-[#fec74f] text-[#542e0d] font-black uppercase tracking-widest px-6 py-2 rounded-full border-4 border-[#fec74f] shadow-[0_4px_0_#713f12] whitespace-nowrap">
+                Winner: {gameResult.players[0]?.name} 
               </div>
               
               <div className="flex flex-col gap-3 mt-4">
@@ -128,7 +128,7 @@ export default function Game() {
       )}
 
       {/* Top Header Bar */}
-      <header className="bg-white/95 backdrop-blur-md border-b-2 border-[#e2e8f0] h-16 px-3 sm:px-6 flex items-center shrink-0 shadow-sm z-10 w-full justify-between overflow-hidden relative">
+      <header className="bg-white/95 backdrop-blur-md border-b-0 border-[#e2e8f0] h-16 px-3 sm:px-6 flex items-center shrink-0 shadow-sm z-10 w-full justify-between overflow-hidden relative">
         
         {/* Left: Logo & Round */}
         <div className="flex items-center gap-2 sm:gap-6 w-[25%] shrink-0">
@@ -157,22 +157,22 @@ export default function Game() {
         </main>
 
         {/* Leaderboard - Bottom left on mobile, Left on desktop */}
-        <aside className="col-start-1 col-end-2 row-start-2 row-end-3 lg:col-start-1 lg:col-end-2 lg:row-start-1 lg:row-end-2 flex flex-col bg-white border-2 border-[#e2e8f0] overflow-hidden min-w-0 relative rounded-[20px] sm:rounded-[24px] lg:rounded-[32px] shadow-sm lg:shadow-[0_8px_20px_rgba(0,0,0,0.05)]">
+        <aside className="col-start-1 col-end-2 row-start-2 row-end-3 lg:col-start-1 lg:col-end-2 lg:row-start-1 lg:row-end-2 flex flex-col bg-white border-2 border-[#e2e8f0] overflow-hidden min-w-0 relative rounded-[10px] shadow-sm lg:shadow-[0_8px_20px_rgba(0,0,0,0.05)]">
            <div className="bg-[#f8fafc] text-[#475569] border-b-2 border-[#e2e8f0] shrink-0 z-10 py-1.5 sm:py-2 lg:py-3 px-2 sm:px-3 lg:px-5">
               <h3 className="font-black uppercase tracking-widest flex items-center gap-1 lg:gap-2 text-[9px] sm:text-[10px] lg:text-sm">
-                 🏆 <span className="lg:hidden">Board</span><span className="hidden lg:inline">Leaderboard</span>
+                 <span className="lg:hidden">Players</span><span className="hidden lg:inline">Leaderboard</span>
               </h3>
            </div>
-           <div className="flex-1 overflow-y-auto custom-scrollbar p-0.5 sm:p-1 lg:p-3">
+           <div className="flex-1 overflow-y-auto custom-scrollbar p-0">
              <PlayerList />
            </div>
         </aside>
 
         {/* Chat - Bottom right on mobile, Right on desktop */}
-        <aside className="col-start-2 col-end-3 row-start-2 row-end-3 lg:col-start-3 lg:col-end-4 lg:row-start-1 lg:row-end-2 flex flex-col bg-white border-2 border-[#e2e8f0] overflow-hidden min-w-0 relative rounded-[20px] sm:rounded-[24px] lg:rounded-[32px] shadow-sm lg:shadow-[0_8px_20px_rgba(0,0,0,0.05)]">
+        <aside className="col-start-2 col-end-3 row-start-2 row-end-3 lg:col-start-3 lg:col-end-4 lg:row-start-1 lg:row-end-2 flex flex-col bg-white border-2 border-[#e2e8f0] overflow-hidden min-w-0 relative rounded-[10px] shadow-sm lg:shadow-[0_8px_20px_rgba(0,0,0,0.05)]">
            <div className="bg-[#f8fafc] text-[#475569] border-b-2 border-[#e2e8f0] shrink-0 z-10 py-1.5 sm:py-2 lg:py-3 px-2 sm:px-3 lg:px-5">
               <h3 className="font-black uppercase tracking-widest flex items-center gap-1 lg:gap-2 text-[9px] sm:text-[10px] lg:text-sm">
-                 💬 <span className="lg:hidden">Chat</span><span className="hidden lg:inline">Chat Area</span>
+                 <span className="lg:hidden">Chat</span><span className="hidden lg:inline">Chat Area</span>
               </h3>
            </div>
            <div className="flex-1 overflow-hidden min-h-0 relative bg-[#f0fdf4]/50 p-0.5 sm:p-1 lg:p-3">

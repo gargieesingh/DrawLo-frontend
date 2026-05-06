@@ -14,7 +14,7 @@ export default function PlayerList() {
   });
 
   return (
-    <div className="w-full flex-col flex gap-3">
+    <div className="w-full flex-col flex">
       {displayPlayers.map((player, idx) => {
         const isDrawing = currentDrawer?.id === player.id;
         const playerIsHost = state.roomCode && state.players[0]?.id === player.id; 

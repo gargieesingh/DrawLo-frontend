@@ -10,10 +10,10 @@ export default function PlayerCard({ player, index, rank, isDrawing, isHost }) {
 
   return (
     <div
-      className={`relative flex items-center gap-1 sm:gap-3 px-1.5 sm:px-4 py-1.5 sm:py-3 rounded-xl sm:rounded-2xl border-[1.5px] sm:border-2 transition-all duration-300 transform
+      className={`relative flex items-center gap-1 sm:gap-3 px-1.5 sm:px-4 py-1.5 rounded-xs border-b-1 border-gray-300 transition-all duration-300 transform
         ${hasGuessed 
-          ? 'bg-[#f0fdf4] border-[#22c55e] shadow-[0_1.5px_0_#22c55e] sm:shadow-[0_2px_0_#22c55e] scale-100' 
-          : 'bg-[#f8fafc] border-[#e2e8f0] shadow-sm hover:-translate-y-1 hover:border-[#a3e635] hover:shadow-[0_8px_0_rgba(163,230,53,0.5)]'}`}
+          ? 'bg-[#9be591] scale-100' 
+          : 'bg-[#edeef0] border-[#e2e8f0]'}`}
     >
       {/* Rank/Avatar */}
       <div className="relative shrink-0 flex items-center gap-1 sm:gap-3">
@@ -51,14 +51,8 @@ export default function PlayerCard({ player, index, rank, isDrawing, isHost }) {
                🎨
              </span>
           )}
-          {hasGuessed && !isDrawing && (
-             <span className="text-[7px] sm:text-[10px] font-black text-[#4ecca3] uppercase tracking-widest mt-0.5 flex items-center gap-0.5 border border-[#4ecca3]/30 bg-[#4ecca3]/10 px-1 sm:px-2 py-0.5 rounded-full w-max">
-               ✓
-             </span>
-          )}
         </div>
-        
-        <div className={`text-[10px] sm:text-base font-black text-right shrink-0 ml-1 ${rank === 1 ? 'text-[#f7b731]' : 'text-[#15803d]'}`}>
+        <div className={`text-[10px] sm:text-base font-black text-right shrink-0 ml-1 ${rank === 1 ? 'text-[#1a1a19]' : 'text-[#161716]'}`}>
           {score}
         </div>
       </div>

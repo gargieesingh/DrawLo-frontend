@@ -71,9 +71,9 @@ export default function Canvas() {
         {/* Canvas Wrapper */}
         <div 
           ref={containerRef}
-          className={`relative flex-1 bg-white rounded-2xl lg:rounded-3xl overflow-hidden transition-all duration-300 min-w-0 w-full h-full
-            ${isDrawer ? 'border-[4px] lg:border-[6px] border-[#e94560] shadow-[0_8px_0_#9f1239] lg:shadow-[0_16px_0_#9f1239]' : 'border-[4px] lg:border-[6px] border-[#334155] shadow-[0_8px_0_#0f172a] lg:shadow-[0_12px_0_#0f172a]'}`}
-          style={{ maxHeight: '100%', maxWidth: '100%', margin: '0 auto' }}
+          className={`relative flex-1 bg-white rounded-lg lg:rounded-3xl overflow-hidden transition-all duration-300 min-w-0 w-full h-full
+            ${isDrawer ? 'border-2 lg:border-4 border-[#e94560] shadow-[0_2px_0_#9f1239] lg:shadow-[0_4px_0_#9f1239]' : 'border-2 lg:border-4 border-[#334155] shadow-[0_2px_0_#0f172a] lg:shadow-[0_4px_0_#0f172a]'}`}
+          style={{ maxHeight: '100%', maxWidth: '100%', margin: '0 auto' }} 
         >
 
           <canvas
@@ -83,10 +83,10 @@ export default function Canvas() {
 
           {gameStatus === 'waiting' && (
             <div className="absolute inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center">
-              <span className="text-white text-sm lg:text-2xl font-black tracking-widest uppercase text-center bg-[#4c1d95] px-4 lg:px-8 py-2 lg:py-4 rounded-full border-4 border-[#7c3aed] shadow-[0_8px_0_#2e1065] animate-pulse">
-                Waiting for Game to Start
+              <span className="text-white text-sm lg:text-2xl font-black tracking-widest uppercase text-center bg-[#167928] px-4 lg:px-8 py-2 lg:py-4 rounded-full border-4 border-[#154834] shadow-[0_8px_0_#064e3b] animate-pulse">
+                No other player left
               </span>
-            </div>
+            </div> 
           )}
         </div>
 
