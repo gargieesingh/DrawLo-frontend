@@ -247,16 +247,18 @@ export default function Home() {
     {/* Footer — separate from body, fixed to bottom of screen */}
     <footer className="bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-t border-[#e2e8f0] mx-0 px-10 pt-2 pb-12.5 flex items-center justify-between gap-2">
 
-      {/* Left — DrawLo brand */}
-      <span className="font-black text-2xl text-[#0f172a] tracking-tight drop-shadow-[0_2px_0_rgba(163,230,53,0.8)] shrink-0">
-        Draw<span className="text-[#a3e635]">Lo</span>
-      </span>
+      {/* Left — DrawLo brand + tagline (stacked on mobile, inline on wider) */}
+      <div className="flex flex-col min-[430px]:flex-row min-[430px]:items-center min-[430px]:gap-3 shrink-0">
+        <span className="font-black text-2xl text-[#0f172a] tracking-tight drop-shadow-[0_2px_0_rgba(163,230,53,0.8)]">
+          Draw<span className="text-[#a3e635]">Lo</span>
+        </span>
 
-      {/* Center — tagline */}
-      <span className="text-[15px] sm:text-xs text-[#94a3b8] font-medium text-center">
-        Built with <span className="text-[#ef4444]">♥</span> by{' '}
-        <span className="font-black text-[#475569]">Gargie</span>
-      </span>
+        {/* Tagline */}
+        <span className="text-[11px] text-[#94a3b8] font-medium">
+          Built with <span className="text-[#ef4444]">♥</span> by{' '}
+          <span className="font-black text-[#475569]">Gargie</span>
+        </span>
+      </div>
 
       {/* Right — social icons */}
       <div className="flex items-center gap-2 shrink-0">
