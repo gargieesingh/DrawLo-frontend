@@ -42,6 +42,18 @@ export default function Chat() {
       );
     }
 
+    // ── Cheat attempt (centered red pill) ────────────────────────────────────
+    if (msg.type === 'cheat') {
+      return (
+        <div key={key} className="flex justify-center my-1.5 sm:my-2 w-full">
+          <div className="bg-[#fff1f2] border-[1.5px] sm:border-[2px] border-[#f43f5e] text-[#be123c] font-black text-[10px] sm:text-xs px-2 sm:px-3 py-0 sm:py-1.5 rounded-md shadow-[0_2px_0_#f43f5e] flex items-center gap-1">
+            <span className="text-sm sm:text-lg leading-none"></span>
+            <span>{msg.name} !! No cheating please😏</span>
+          </div> 
+        </div>
+      );
+    }
+
     // ── Consecutive message logic ─────────────────────────────────────────────
     let showName = true;
     if (index > 0) {
