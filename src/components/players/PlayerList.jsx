@@ -16,7 +16,10 @@ export default function PlayerList() {
   return (
     <div className="w-full flex-col flex">
       {displayPlayers.map((player, idx) => {
-        const isDrawing = currentDrawer?.id === player.id;
+        // currentDrawer can be a plain socket-ID string (from ROOM_UPDATE)
+        // or an object { id, name } (from TURN_START) — handle both shapes
+        const drawerId = typeof currentDrawer === 'object' ? currentDrawer?.id : currentDrawer;
+        const isDrawing = !!drawerId && drawerId === player.id;
         const playerIsHost = state.roomCode && state.players[0]?.id === player.id; 
 
         return (

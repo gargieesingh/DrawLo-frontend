@@ -11,8 +11,10 @@ export default function PlayerCard({ player, index, rank, isDrawing, isHost }) {
   return (
     <div
       className={`relative flex items-center gap-1 sm:gap-3 px-1.5 sm:px-4 py-1.5 rounded-xs border-b-1 border-gray-300 transition-all duration-300 transform
-        ${hasGuessed 
-          ? 'bg-[#9be591] scale-100' 
+        ${hasGuessed
+          ? 'bg-[#22c55e] scale-100'
+          : isDrawing
+          ? 'bg-[#f7b731] border-[#e2a800]'
           : 'bg-[#edeef0] border-[#e2e8f0]'}`}
     >
       {/* Rank/Avatar */}
@@ -43,14 +45,21 @@ export default function PlayerCard({ player, index, rank, isDrawing, isHost }) {
       {/* Info */}
       <div className="flex-1 min-w-0 flex items-center justify-between">
         <div className="flex flex-col min-w-0">
-          <span className="font-bold text-[#0f172a] text-[10px] sm:text-base truncate" title={name}>
+          <span className="font-bold text-[#0f172a] text-[10px] sm:text-base truncate flex items-center gap-1" title={name}>
             {name}
+            {isDrawing && (
+              <svg viewBox="0 0 100 100" className="w-[12px] h-[12px] sm:w-[18px] sm:h-[18px] drop-shadow-sm shrink-0" aria-label="Drawing">
+                <g transform="translate(50, 50) rotate(45) translate(-50, -50)">
+                  <polygon points="30,70 70,70 50,100" fill="#fde68a" stroke="#1e293b" strokeWidth="5" strokeLinejoin="round" />
+                  <polygon points="43,89.5 57,89.5 50,100" fill="#1e293b" stroke="#1e293b" strokeWidth="2" strokeLinejoin="round" />
+                  <rect x="30" y="30" width="40" height="40" fill="#fca5a5" stroke="#1e293b" strokeWidth="5" strokeLinejoin="round" />
+                  <rect x="43" y="30" width="14" height="40" fill="#ef4444" />
+                  <rect x="28" y="20" width="44" height="10" rx="3" fill="#f8fafc" stroke="#1e293b" strokeWidth="5" strokeLinejoin="round" />
+                  <path d="M 30 20 L 30 10 C 30 4 35 2 50 2 C 65 2 70 4 70 10 L 70 20 Z" fill="#f43f5e" stroke="#1e293b" strokeWidth="5" strokeLinejoin="round" />
+                </g>
+              </svg>
+            )}
           </span>
-          {isDrawing && (
-             <span className="text-[7px] sm:text-[10px] font-black text-[#e94560] uppercase tracking-widest mt-0.5 animate-pulse border border-[#e94560]/30 bg-[#e94560]/10 px-1 sm:px-2 py-0.5 rounded-full w-max">
-               🎨
-             </span>
-          )}
         </div>
         <div className={`text-[10px] sm:text-base font-black text-right shrink-0 ml-1 ${rank === 1 ? 'text-[#1a1a19]' : 'text-[#161716]'}`}>
           {score}
