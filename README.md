@@ -1,4 +1,6 @@
 # DrawLo Frontend
+<img width="289" height="530" alt="image" src="https://github.com/user-attachments/assets/a624a46e-5b23-445c-8a61-131935f1ba5a" />
+
 
 The frontend client for DrawLo, a real-time multiplayer drawing and guessing game. 
 
